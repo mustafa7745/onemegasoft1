@@ -25,7 +25,7 @@ class AppsAttribute
 
     function initForignkey()
     {
-        require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/device_types/attribute.php');
+        require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/devices_types/attribute.php');
         $this->devices_types_attribute = new DevicesTypesAttribute();
 
     }

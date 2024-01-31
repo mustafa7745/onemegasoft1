@@ -20,8 +20,7 @@ class DevicesTypesAttribute
     /////json function
     function jsonF($data, $i)
     {
-       
-      
+        // print_r($data);  
         return json_encode(
             array(
                 "$this->device_type_id" => $data[$i]["$this->device_type_id"],

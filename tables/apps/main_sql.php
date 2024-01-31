@@ -9,6 +9,13 @@ class MainSqlApps extends AppsAttribute
         /////
         return read_by_condition_sql($table_name, $column, $innerJoin, $condition);
     }
+    function r_sql($innerJoin, $condition): string
+    {
+        $table_name = $this->table_name;
+        $column = " * ";
+        /////
+        return read_by_condition_sql($table_name, $column, $innerJoin, $condition);
+    }
     function r_device_type_id_sql($innerJoin, $condition): string
     {
         $table_name = $this->table_name;

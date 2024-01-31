@@ -15,6 +15,7 @@ function shared_execute_read_sql($sql, $json): string
         for ($i = 0; $i < count($data); $i++) {
             $data[$i] = json_decode($json($data, $i));
         }
+        // print_r($data);
         return fun()->SUCCESS_WITH_DATA($data);
     }
     return fun()->ERROR_SQL();
