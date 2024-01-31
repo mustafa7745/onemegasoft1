@@ -1,5 +1,6 @@
 <?php
 header('Content-Type: application/json');
+header("Access-Control-Allow-Origin:*");
 class DB{
 public   $servername = "localhost";
 public $username = "root";

@@ -1,7 +1,7 @@
 <?php
 
 require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/app/on_open_app/checking_level_permissions.php');
-class OnLogin extends CheckingLevelPermissions
+class Groups extends CheckingLevelPermissions
 {
     private $app_package_name;
     private $app_sha256;
@@ -28,7 +28,6 @@ class OnLogin extends CheckingLevelPermissions
         $app_device_token,
         $user_phone,
         $user_password
-
     ) {
         $this->app_package_name = $app_package_name;
         $this->app_sha256 = $app_sha256;
@@ -55,7 +54,7 @@ class OnLogin extends CheckingLevelPermissions
 
         // echo "hh";
     }
-    function check()
+    function read()
     {
         $v1 = $this->check->check();
         $c1 = json_decode($v1, true);
@@ -64,7 +63,7 @@ class OnLogin extends CheckingLevelPermissions
             $this->app_data = $app_data;
             require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/app/on_open_app/shared_checking_level_sql.php');
 
-            $checking_sql = new SharedCheckingLevelSql("LOGIN");
+            $checking_sql = new SharedCheckingLevelSql("READ_GROUPS");
             $sql = $checking_sql->check_permission($app_data);
             // echo $sql;
             $result = fun()->exec_one_sql($sql);
@@ -82,9 +81,9 @@ class OnLogin extends CheckingLevelPermissions
                 if ($c1["result"]) {
                     if (isset($this->app_data["user_id"]) and $this->app_data["user_id"] != null) {
                         if ($this->app_data["user_session_id"] != null) {
-                            return fun()->SUCCESS_WITH_DATA($this->app_data);
+                            return $this->read_groups();
                         }
-                        return $this->add_user_session();
+                        return $fun()->USER_SESSION_NOT_FOUND_PLEASE_LOGIN_AGAIN();
                     }
                     return fun()->USER_OR_PASSWORD_ERROR();
                 }
@@ -95,23 +94,13 @@ class OnLogin extends CheckingLevelPermissions
         return $v1;
     }
 
-    function add_user_session()
+    function read_groups()
     {
-        require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/users_sessions/user/executer.php');
-        $user_users_sessions_executer = new User_UsersSessionsExecuter();
-        $user_session_id = uniqid(rand(), false);
-        $v1 = $user_users_sessions_executer->execute_insert_sql(
-            $user_session_id,
-            $this->app_data["user_id"],
-            $this->app_data["device_session_id"],
-            fun()
-        );
-        $c1 = json_decode($v1);
-        if ($c1->result) {
-            $this->app_data["user_session_id"] = $user_session_id;
-            return fun()->SUCCESS_WITH_DATA($this->app_data);
-        }
-        return $v1;
+        require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/groups/user/executer.php');
+        
+        $user_groups_executer = new User_GroupsExecuter();
+        
+        return $user_groups_executer->execute_read_sql();
     }
 
 

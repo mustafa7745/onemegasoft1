@@ -2,7 +2,7 @@
 class GroupsAttribute{
 
 public $name = "group";
-public $table_name = "groups";
+public $table_name = "`groups`";
 public $group_id = "group_id";
 public $group_name = "group_name";
 

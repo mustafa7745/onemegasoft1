@@ -1,6 +1,6 @@
 <?php
 $root = "onemegasoft1";
-require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/app/on_open_app/init_device_session_ip/executer.php");
+require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/app/on_login/groups/executer.php");
 require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/api/shared/shared_post_level.php");
 /////////////////
 
@@ -12,42 +12,40 @@ class ThisClass
 
   function __construct()
   {
-    // print_r($_POST);
     $this->shared_post_level = new SharedPostLevel();
-    checkPosts1($GLOBALS['va']);
+    checkPosts2($GLOBALS['va']);
   }
   function init()
   {
-    $this->shared_post_level->init_shared_post_level1();
-    $this->controller = new CheckingInitDeviceSessionIp(
+    // echo "dd";
+    $this->shared_post_level->init_shared_post_level2();
+    // echo "dd";
+    $this->controller = new Groups(
       $this->shared_post_level->app_package_name,
       $this->shared_post_level->sha,
       $this->shared_post_level->app_version,
       $this->shared_post_level->device_type_name,
       $this->shared_post_level->device_id,
       $this->shared_post_level->device_info,
-      $this->shared_post_level->app_device_token
+      $this->shared_post_level->app_device_token,
+      $this->shared_post_level->user_phone,
+      $this->shared_post_level->user_password
     );
-    // $this->controller->initUserAttr( $user_phone, $user_password);
-
-
   }
 
   function main(): string
   {
     $this->init();
-    // sleep(2);
+    // sleep(1);
     // echo "dd";
-    $v1 = $this->controller->check();
-    $c1 = json_decode($v1);
-    if ($c1->result) {
+    $v1 = $this->controller->read();
+    $c1 = json_decode($v1,true);
+      if ( $c1["result"]) {
+        return json_encode($c1["data"]);
+      }
       return $v1;
     }
-    return $v1;
-  }
 }
 
 $this_class = new ThisClass();
 echo $this_class->main();
-
-?>

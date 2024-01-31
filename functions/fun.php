@@ -32,7 +32,6 @@ class Fun
   }
   function isSetValues0(): string
   {
-
     // // print_r("t");
     // foreach ($posted_data as $key => $value) {
     //   if (!in_array($key, $variable_array)) {
@@ -41,11 +40,13 @@ class Fun
     // }
 
     /////
+    // echo "dd";
     $v1 = $this->filter_posted_data->filterAppPackageName( $this);
     $c1 = json_decode($v1);
     if (!$c1->result) {
       return $v1;
     }
+    // echo "dd";
     // print_r("t");
     //////
     $v1 = $this->filter_posted_data->filterAppVersion( $this);
@@ -421,8 +422,8 @@ class Fun
   }
   function PERMISSION_IS_BLOCKED_FROM_USE_IN_THIS_APP($name): string
   {
-    $ar = "{$name}_PERMISSION_IS_BLOCKED_FROM_USE_IN_THIS_IPS";
-    $en = "{$name}_PERMISSION_IS_BLOCKED_FROM_USE_IN_THIS_IPS";
+    $ar = "{$name}_PERMISSION_IS_BLOCKED_FROM_USE_IN_THIS_APP";
+    $en = "{$name}_PERMISSION_IS_BLOCKED_FROM_USE_IN_THIS_APP";
     return $this->wrong->wrong_response->response(00, $ar, $en);
   }
 
@@ -470,6 +471,12 @@ class Fun
     $ar = "تم ايقافك لمدة يوم من المحاولات الفاشلة";
     $en = "USER_BLOCKED_MANY_TIMES_ATTEMPS_LOGIN";
     return $this->wrong->wrong_response->response(1011, $ar, $en);
+  }
+  function USER_SESSION_NOT_FOUND_PLEASE_LOGIN_AGAIN(): string
+  {
+    $ar = "USER_SESSION_NOT_FOUND_PLEASE_LOGIN_AGAIN";
+    $en = "USER_SESSION_NOT_FOUND_PLEASE_LOGIN_AGAIN";
+    return $this->wrong->wrong_response->response(1070, $ar, $en);
   }
 
   function USER_SESSION_LOGGED_OUT(): string

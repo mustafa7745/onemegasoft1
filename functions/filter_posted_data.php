@@ -9,7 +9,7 @@ class FilterPostedData
         if (
             !isset($_POST[$name]) ||
             empty($_POST[$name]) ||
-            strlen($_POST[$name]) > 26 ||
+            strlen($_POST[$name]) > 30 ||
             !str_starts_with($_POST[$name], $checked)
         ) {
             return $fun->PARAMETER_INVALID();
