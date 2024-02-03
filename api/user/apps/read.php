@@ -50,20 +50,27 @@ class ThisClass
     $this->init();
     // sleep(1);
     // echo "dd";
+
     if ($this->id != null) {
       $this->controller->id = $this->id;
       // echo $this->controller->id;
       if ($this->type == "group") {
        $v1 = $this->controller->read("group");
+    
       }
-      fun()->UNKOWN_TYPE_ID();
+      else{
+        return fun()->UNKOWN_TYPE_ID();
+      }
+      
     }
     else{
 
       $v1 = $this->controller->read("");
     }
+
     $c1 = json_decode($v1,true);
       if ( $c1["result"]) {
+        
         return json_encode($c1["data"]);
       }
       return $v1;
