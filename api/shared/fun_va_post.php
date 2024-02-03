@@ -36,6 +36,17 @@ function checkPosts2($va)
     // echo "dd";
 }
 
+function check_id($id)
+{
+    $v1 = fun()->CHECK_ID_JSON($id);
+    $c1 = json_decode($v1,true);
+    if (!$c1["result"]) {
+        echo $v1;
+        exit();
+    }
+    // echo "dd";
+}
+
 function checkPostValidate()
 {
     // echo count($GLOBALS['va']);

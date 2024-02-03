@@ -41,7 +41,7 @@ class Fun
 
     /////
     // echo "dd";
-    $v1 = $this->filter_posted_data->filterAppPackageName( $this);
+    $v1 = $this->filter_posted_data->filterAppPackageName($this);
     $c1 = json_decode($v1);
     if (!$c1->result) {
       return $v1;
@@ -49,7 +49,7 @@ class Fun
     // echo "dd";
     // print_r("t");
     //////
-    $v1 = $this->filter_posted_data->filterAppVersion( $this);
+    $v1 = $this->filter_posted_data->filterAppVersion($this);
     $c1 = json_decode($v1);
     if (!$c1->result) {
       return $v1;
@@ -62,26 +62,26 @@ class Fun
     }
     // print_r("t");
     /////
-    $v1 = $this->filter_posted_data->filterDeviceId( $this);
+    $v1 = $this->filter_posted_data->filterDeviceId($this);
     $c1 = json_decode($v1);
     if (!$c1->result) {
       return $v1;
     }
     /////
-    $v1 = $this->filter_posted_data->filterDeviceInfo( $this);
+    $v1 = $this->filter_posted_data->filterDeviceInfo($this);
     $c1 = json_decode($v1);
     if (!$c1->result) {
       return $v1;
     }
 
     /////
-    $v1 = $this->filter_posted_data->filterDeviceToken( $this);
+    $v1 = $this->filter_posted_data->filterDeviceToken($this);
     $c1 = json_decode($v1);
     if (!$c1->result) {
       return $v1;
     }
     /////
-    $v1 = $this->filter_posted_data->filterDeviceTypeName( $this);
+    $v1 = $this->filter_posted_data->filterDeviceTypeName($this);
     $c1 = json_decode($v1);
     if (!$c1->result) {
       return $v1;
@@ -123,7 +123,6 @@ class Fun
         }
 
         $i++;
-
       }
       return true;
     } else
@@ -293,14 +292,12 @@ class Fun
     $ar = "هذا الاجراء ياطلب التحديث الى اخر اصدار";
     $en = "{$name}_REQUIRED_UPDATE";
     return $this->wrong->wrong_response->response(1021, $ar, $en);
-
   }
   function PERMISSION_UNDER_MAINTANANCE($name): string
   {
     $ar = "هذا الاجراء قيد الصيانة والتحديث";
     $en = "{$name}_UNDER_MAINTANANCE";
     return $this->wrong->wrong_response->response(1022, $ar, $en);
-
   }
 
   ///////////
@@ -317,14 +314,12 @@ class Fun
     $ar = "DEVICE_ID_MUST_BE_FORMATTED";
     $en = "DEVICE_ID_MUST_BE_FORMATTED";
     return $this->wrong->wrong_response->response(1032, $ar, $en);
-
   }
   function DEVICE_INFO_MUST_BE_FORMATTED(): string
   {
     $ar = "DEVICE_INFO_MUST_BE_FORMATTED";
     $en = "DEVICE_INFO_MUST_BE_FORMATTED";
     return $this->wrong->wrong_response->response(1033, $ar, $en);
-
   }
 
 
@@ -489,8 +484,6 @@ class Fun
   {
     // http_response_code(501);
     return json_encode(array('result' => false, 'code' => 302, 'data' => "APP_LOGIN_REQUIRED_UPDATE"));
-
-
   }
 
 
@@ -735,12 +728,20 @@ class Fun
     $ar = "JSON_FORMAT_INVALID";
     $en = "JSON_FORMAT_INVALID";
     return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
 
+  function UNKOWN_TYPE_ID(): string
+  {
+    $ar = "UNKOWN_TYPE_ID";
+    $en = "UNKOWN_TYPE_ID";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
   }
   function CONVERT_IDS_TO_LIST($ids_json): string
   {
     try {
       $data = json_decode($ids_json, true);
+      if (!$data)
+        return $this->JSON_FORMAT_INVALID();
       $i = 1;
       foreach ($data as $key => $value) {
         if ($key != $i)
@@ -761,9 +762,30 @@ class Fun
     } catch (\Throwable $th) {
       return $this->JSON_FORMAT_INVALID();
     }
-
   }
-
+  function CHECK_ID_JSON($id): string
+  {
+    // echo 'Current PHP version: ' . phpversion();
+    if (!$this->json_validate($id)) {
+      // echo "ff";
+      return $this->JSON_FORMAT_INVALID();
+    }
+    // echo "ff";
+    $data = json_decode($id, true);
+    
+    if (!$data["type"]) {
+      // echo "ff";
+      return $this->JSON_FORMAT_INVALID();
+    }
+    if (!$data["id"]) {
+      // echo "ff";
+      return $this->JSON_FORMAT_INVALID();
+    }
+    // echo "ff";
+    return $this->SUCCESS_WITH_DATA($id);
+  }
+  function json_validate(string $string): bool {
+    json_decode($string);
+    return json_last_error() === JSON_ERROR_NONE;
 }
-
-?>
+}

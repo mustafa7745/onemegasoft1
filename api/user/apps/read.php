@@ -9,10 +9,21 @@ class ThisClass
   // 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
   public $controller;
   public $shared_post_level;
+  // 
+  public $id;
+  public $type;
 
   function __construct()
   {
     $this->shared_post_level = new SharedPostLevel();
+    if (isset($_POST["id"])&& $_POST["id"] !=null) {
+      array_push($GLOBALS['va'],"id");
+      $this->id = $_POST["id"];
+      check_id($this->id);
+      $d = json_decode($this->id,TRUE);
+      $this->id = $d["id"];
+      $this->type = $d["type"];
+    }
     checkPosts2($GLOBALS['va']);
   }
   function init()
@@ -35,10 +46,22 @@ class ThisClass
 
   function main(): string
   {
+    $v1 = null;
     $this->init();
     // sleep(1);
     // echo "dd";
-    $v1 = $this->controller->read();
+    if ($this->id != null) {
+      $this->controller->id = $this->id;
+      // echo $this->controller->id;
+      if ($this->type == "group") {
+       $v1 = $this->controller->read("group");
+      }
+      fun()->UNKOWN_TYPE_ID();
+    }
+    else{
+
+      $v1 = $this->controller->read("");
+    }
     $c1 = json_decode($v1,true);
       if ( $c1["result"]) {
         return json_encode($c1["data"]);

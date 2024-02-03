@@ -17,6 +17,8 @@ class Groups extends CheckingLevelPermissions
     private $login_data;
     // 
     private $check;
+    // 
+    public $id;
 
     public function __construct(
         $app_package_name,
@@ -54,7 +56,8 @@ class Groups extends CheckingLevelPermissions
 
         // echo "hh";
     }
-    function read()
+
+    function read($read_type)
     {
         $v1 = $this->check->check();
         $c1 = json_decode($v1, true);
@@ -72,15 +75,16 @@ class Groups extends CheckingLevelPermissions
                 while ($row = $result->fetch_assoc()) {
                     $myArray[] = $row;
                 }
-
                 $this->login_data = $myArray[0];
                
-
                 $v1 = $this->check_all($this->login_data, $this->app_version, $checking_sql->permission_name);
                 $c1 = json_decode($v1, true);
                 if ($c1["result"]) {
                     if (isset($this->app_data["user_id"]) and $this->app_data["user_id"] != null) {
                         if ($this->app_data["user_session_id"] != null) {
+                            if ($read_type == 'in') {  
+                                return $this->read_in($this->id);
+                            }
                             return $this->read_groups();
                         }
                         return $fun()->USER_SESSION_NOT_FOUND_PLEASE_LOGIN_AGAIN();
@@ -97,10 +101,14 @@ class Groups extends CheckingLevelPermissions
     function read_groups()
     {
         require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/groups/user/executer.php');
-        
         $user_groups_executer = new User_GroupsExecuter();
-        
         return $user_groups_executer->execute_read_sql();
+    }
+    function read_in($ids)
+    {
+        require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/groups/user/executer.php');
+        $user_groups_executer = new User_GroupsExecuter();
+        return $user_groups_executer->execute_read_in_sql($ids);
     }
 
 

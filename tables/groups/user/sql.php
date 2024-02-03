@@ -10,5 +10,13 @@ class User_GroupsSql extends MainSqlGroups{
         /////
         return $this->r_sql($innerJoin, $condition);
     }
+    function read_in_sql($ids): string
+    {
+        // return "(SELECT $this->device_app_session_id FROM $this->table_name WHERE $this->device_id = $device_id and $this->app_id = $app_id)";
+        $innerJoin = "";
+        $condition = "$this->group_id IN ($ids)";
+        /////
+        return $this->r_sql($innerJoin, $condition);
+    }
 }
 ?>

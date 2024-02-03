@@ -22,6 +22,7 @@ function read_by_condition_sql($table_name,$columns, $innerJoin, $condition): st
     return $sql;
 }
 
+
 function read_one_column_sql($table_name, $column, $innerJoin, $condition): string
 {
     $sql = "(SELECT {$table_name}.{$column} FROM $table_name $innerJoin WHERE $condition)";

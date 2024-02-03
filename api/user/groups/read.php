@@ -6,14 +6,24 @@ require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/api/shared/shared_post_level.ph
 
 class ThisClass
 {
+  
+  public $isSetId = false;
   // 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
   public $controller;
   public $shared_post_level;
+  // 
+  public $id;
 
   function __construct()
   {
     $this->shared_post_level = new SharedPostLevel();
+    if (isset($_POST["id"])&& $_POST["id"] !=null) {
+      array_push($GLOBALS['va'],"id");
+      $this->id = $_POST["id"];
+      $this->id = check_id($this->id);
+    }
     checkPosts2($GLOBALS['va']);
+   
   }
   function init()
   {
@@ -32,16 +42,27 @@ class ThisClass
       $this->shared_post_level->user_password
     );
   }
-
+  // 
   function main(): string
   {
+    $v1 = null;
     $this->init();
     // sleep(1);
     // echo "dd";
-    $v1 = $this->controller->read();
+    if ($this->id != null) {
+      $this->controller->id = $this->id;
+      // echo $this->controller->id;
+      $v1 = $this->controller->read("in");
+    }
+    else{
+
+      $v1 = $this->controller->read("");
+    }
+    
     $c1 = json_decode($v1,true);
       if ( $c1["result"]) {
         return json_encode($c1["data"]);
+        // 
       }
       return $v1;
     }

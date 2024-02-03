@@ -17,6 +17,8 @@ class Apps extends CheckingLevelPermissions
     private $login_data;
     // 
     private $check;
+    // 
+    public $id;
 
     public function __construct(
         $app_package_name,
@@ -54,7 +56,7 @@ class Apps extends CheckingLevelPermissions
 
         // echo "hh";
     }
-    function read()
+    function read($read_type)
     {
         $v1 = $this->check->check();
         $c1 = json_decode($v1, true);
@@ -81,6 +83,9 @@ class Apps extends CheckingLevelPermissions
                 if ($c1["result"]) {
                     if (isset($this->app_data["user_id"]) and $this->app_data["user_id"] != null) {
                         if ($this->app_data["user_session_id"] != null) {
+                            if ($read_type == 'group') {
+                                return $this->read_by_group_id($this->id);
+                            }
                             return $this->read_groups();
                         }
                         return $fun()->USER_SESSION_NOT_FOUND_PLEASE_LOGIN_AGAIN();
@@ -102,6 +107,14 @@ class Apps extends CheckingLevelPermissions
         
         return $user_apps_executer->execute_read_sql();
     }
+    
+    function read_by_group_id($id)
+    {
+        require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/apps/user/executer.php');
+        $user_apps_executer = new User_AppsExecuter();
+        return $user_apps_executer->execute_read_by_group_id_sql($this->id);
+    }
+
 
 
 

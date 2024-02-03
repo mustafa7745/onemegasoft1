@@ -10,6 +10,13 @@ class User_GroupsExecuter extends User_GroupsSql
     $this->initJson();
     return shared_execute_read_no_json_sql($sql);
   }
+  function execute_read_in_sql($ids): string
+  {
+    $sql = $this->read_in_sql($ids);
+    // echo $sql;
+    $this->initJson();
+    return shared_execute_read_no_json_sql($sql);
+  }
 
 
 }
