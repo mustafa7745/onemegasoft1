@@ -36,6 +36,8 @@ function checkPosts2($va)
     // echo "dd";
 }
 
+
+
 function check_id($id)
 {
     $v1 = fun()->CHECK_ID_JSON($id);

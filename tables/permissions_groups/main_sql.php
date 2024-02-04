@@ -9,6 +9,13 @@ class MainSqlPermissionsGroups extends PermissionsGroupsAttribute
         return read_by_condition_sql($table_name, $column, $innerJoin, $condition);
         
     } 
+    function r_permission_id_sql($innerJoin, $condition):String{
+        $table_name = $this->table_name;
+        $column = "{$this->table_name}.{$this->permission_id}";
+        /////
+        return read_by_condition_sql($table_name, $column, $innerJoin, $condition);
+        
+    } 
    
 }
 ?>
