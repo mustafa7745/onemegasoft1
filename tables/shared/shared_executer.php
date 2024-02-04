@@ -12,6 +12,7 @@ function shared_execute_read_sql($sql, $json): string
             $myArray[] = $row;
         }
         $data = $myArray;
+        // print_r($data);
         for ($i = 0; $i < count($data); $i++) {
             $data[$i] = json_decode($json($data, $i));
         }

@@ -729,11 +729,24 @@ class Fun
     $en = "JSON_FORMAT_INVALID";
     return $this->wrong->wrong_response->response(00, $ar, $en);
   }
+  function ID_INVALID(): string
+  {
+    $ar = "ID_INVALID";
+    $en = "ID_INVALID";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
+
 
   function UNKOWN_TYPE_ID(): string
   {
     $ar = "UNKOWN_TYPE_ID";
     $en = "UNKOWN_TYPE_ID";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
+  function UNKOWN_TYPE(): string
+  {
+    $ar = "UNKOWN_TYPE";
+    $en = "UNKOWN_TYPE";
     return $this->wrong->wrong_response->response(00, $ar, $en);
   }
   function CONVERT_IDS_TO_LIST($ids_json): string
@@ -763,23 +776,24 @@ class Fun
       return $this->JSON_FORMAT_INVALID();
     }
   }
+
   function CHECK_ID_JSON($id): string
   {
     // echo 'Current PHP version: ' . phpversion();
     if (!$this->json_validate($id)) {
       // echo "ff";
-      return $this->JSON_FORMAT_INVALID();
+      return $this->ID_INVALID();
     }
     // echo "ff";
     $data = json_decode($id, true);
     
     if (!$data["type"]) {
       // echo "ff";
-      return $this->JSON_FORMAT_INVALID();
+      return $this->ID_INVALID();
     }
     if (!$data["id"]) {
       // echo "ff";
-      return $this->JSON_FORMAT_INVALID();
+      return $this->ID_INVALID();
     }
     // echo "ff";
     return $this->SUCCESS_WITH_DATA($id);

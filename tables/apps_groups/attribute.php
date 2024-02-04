@@ -30,9 +30,11 @@ class AppsGroupsAttribute
     /////json function
     function jsonF($data, $i)
     {
-
+        $this->initForignkey();
         return json_encode(
             array(
+                "{$this->apps_attribute->name}" => json_decode($this->apps_attribute->jsonF($data, $i)),
+                "{$this->groups_attribute->name}" => json_decode($this->groups_attribute->jsonF($data, $i))
             )
         );
     }
@@ -40,12 +42,13 @@ class AppsGroupsAttribute
     /////Native Inner join
     function NATIVE_INNER_JOIN(): string
     {
-        $inner = NATIVE_INNER_JOIN($this->table_name, $this->app_id);
+        $inner = NATIVE_INNER_JOIN($this->table_name, $this->app_group_id);
         return $inner;
     }
     /////Inner join
     function INNER_JOIN(): string
     {
+        $this->initForignkey();
         $inner =
         FORIGN_KEY_ID_INNER_JOIN($this->apps_attribute->NATIVE_INNER_JOIN(), $this->table_name, $this->app_id)
         . " " .

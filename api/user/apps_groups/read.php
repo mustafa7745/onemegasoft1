@@ -1,18 +1,18 @@
 <?php
 $root = "onemegasoft1";
-require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/app/on_login/groups/executer.php");
+require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/app/on_login/apps_groups/executer.php");
 require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/api/shared/shared_post_level.php");
 /////////////////
 
 class ThisClass
 {
 
-  public $isSetId = false;
   // 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
   public $controller;
   public $shared_post_level;
   // 
   public $id;
+  public $type;
 
   function __construct()
   {
@@ -20,7 +20,12 @@ class ThisClass
     array_push($GLOBALS['va'], "id");
     // 
     if (isset($_POST["id"]) && $_POST["id"] != null) {
-      $this->id = check_id($_POST["id"]);
+      check_id($_POST["id"]);
+      $d = json_decode($_POST["id"], TRUE);
+      // print_r($d);
+      $this->id = $d["id"];
+      $this->type = $d["type"];
+
       checkPosts2($GLOBALS['va']);
     } else {
       echo fun()->PARAMETER_INVALID();
@@ -32,7 +37,7 @@ class ThisClass
     // echo "dd";
     $this->shared_post_level->init_shared_post_level2();
     // echo "dd";
-    $this->controller = new Groups(
+    $this->controller = new AppsGroups(
       $this->shared_post_level->app_package_name,
       $this->shared_post_level->sha,
       $this->shared_post_level->app_version,
@@ -51,19 +56,16 @@ class ThisClass
     $this->init();
     // sleep(1);
     // echo "dd";
-    if ($this->id != null) {
-      $this->controller->id = $this->id;
-      // echo $this->controller->id;
-      $v1 = $this->controller->read("in");
-    } else {
+    if ($this->type == "group") {
+      $v1 = $this->controller->read_apps_groups_by_group_id($this->id);
+    } else
+      fun()->UNKOWN_TYPE();
 
-      $v1 = $this->controller->read("");
-    }
 
     $c1 = json_decode($v1, true);
     if ($c1["result"]) {
+      // print_r($c1["data"]);
       return json_encode($c1["data"]);
-      // 
     }
     return $v1;
   }

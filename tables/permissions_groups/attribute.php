@@ -31,9 +31,11 @@ class PermissionsGroupsAttribute
     /////json function
     function jsonF($data, $i)
     {
-
+        $this->initForignkey();
         return json_encode(
             array(
+                "{$this->permissions_attribute->name}" => json_decode($this->permissions_attribute->jsonF($data, $i)),
+                "{$this->groups_attribute->name}" => json_decode($this->groups_attribute->jsonF($data, $i))
             )
         );
     }
@@ -47,6 +49,7 @@ class PermissionsGroupsAttribute
     /////Inner join
     function INNER_JOIN(): string
     {
+        $this->initForignkey();
         $inner =
         FORIGN_KEY_ID_INNER_JOIN($this->permissions_attribute->NATIVE_INNER_JOIN(), $this->table_name, $this->permission_id)
         . " " .
