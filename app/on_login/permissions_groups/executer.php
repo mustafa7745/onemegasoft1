@@ -57,7 +57,7 @@ class PermissionsGroups extends CheckingLevelPermissions
         // echo "hh";
     }
 
-    function read()
+    function check($permission_name)
     {
         $v1 = $this->check->check();
         $c1 = json_decode($v1, true);
@@ -66,7 +66,7 @@ class PermissionsGroups extends CheckingLevelPermissions
             $this->app_data = $app_data;
             require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/app/on_open_app/shared_checking_level_sql.php');
 
-            $checking_sql = new SharedCheckingLevelSql("READ_APPS_GROUPS");
+            $checking_sql = new SharedCheckingLevelSql($permission_name);
             $sql = $checking_sql->check_permission($app_data);
             // echo $sql;
             $result = fun()->exec_one_sql($sql);
@@ -96,13 +96,25 @@ class PermissionsGroups extends CheckingLevelPermissions
     }
     function read_permissions_groups_by_group_id($group_id)
     {
-        $v1 = $this->check->check();
+        $v1 = $this->check("READ_PERMISSIONS_GROUPS");
         $c1 = json_decode($v1, true);
         if ($c1["result"]) {
             require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/permissions_groups/user/executer.php');
             $user_permission_group_executer = new User_PermissionsGroupsExecuter();
             // print_r($user_app_group_executer->execute_read_by_group_id_sql($group_id));
             return $user_permission_group_executer->execute_read_by_group_id_sql($group_id);
+        }
+        return $v1;
+    }
+    function delete_permissions_groups($ids)
+    {
+        $v1 = $this->check("DELETE_PERMISSIONS_GROUPS");
+        $c1 = json_decode($v1, true);
+        if ($c1["result"]) {
+            require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/permissions_groups/user/executer.php');
+            $user_permission_group_executer = new User_PermissionsGroupsExecuter();
+            // print_r($user_app_group_executer->execute_read_by_group_id_sql($group_id));
+            return $user_permission_group_executer->execute_delete_sql($ids);
         }
         return $v1;
     }

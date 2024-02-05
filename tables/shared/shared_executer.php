@@ -58,6 +58,16 @@ function shared_execute_insert_sql($sql)
     }
     return $v1;
 }
+function shared_execute_delete_sql($sql)
+{
+    $sql_array = array($sql);
+    $v1 = fun()->exec_sql($sql_array);
+    $c1 = json_decode($v1);
+    if ($c1->result) {
+        return fun()->SUCCESS_NO_DATA();
+    }
+    return $v1;
+}
 function shared_execute_more_sql($sql_array)
 {
     // print_r($sql_array)
@@ -147,7 +157,7 @@ function shared_execute_read_where_ids_sql($ids, $sql, $json): string
     return $v1;
 }
 
-function shared_execute_delete_sql(
+function shared_execute_delete_sql1(
     $user_id,
     $mycode_id,
     $app_type_id,

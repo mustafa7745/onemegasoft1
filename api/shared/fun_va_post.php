@@ -41,13 +41,42 @@ function checkPosts2($va)
 function check_id($id)
 {
     $v1 = fun()->CHECK_ID_JSON($id);
-    $c1 = json_decode($v1,true);
+    $c1 = json_decode($v1, true);
     if (!$c1["result"]) {
         echo $v1;
         exit();
     }
     // return 
     // echo "dd";
+}
+function check_search($id)
+{
+    $v1 = fun()->CHECK_SEARCH_JSON($id);
+    $c1 = json_decode($v1, true);
+    if (!$c1["result"]) {
+        echo $v1;
+        exit();
+    }
+    // return 
+    // echo "dd";
+}
+
+
+function check_deleted_ids()
+{
+    if (isset($_POST["ids"]) && $_POST["ids"] != null) {
+        $v1 = fun()->CONVERT_IDS_TO_LIST($_POST["ids"]);
+        $c1 = json_decode($v1, true);
+        if (!$c1["result"]) {
+            echo $v1;
+            exit();
+        }
+        return $v1;
+
+    } else {
+        echo fun()->PARAMETER_INVALID();
+        exit();
+    }
 }
 
 function checkPostValidate()

@@ -218,7 +218,7 @@ class Fun
   function PARAMETER_INVALID(): string
   {
     $ar = "البيانات غير مكتمله";
-    $en = " p invalid";
+    $en = ($_POST);
     return $this->wrong->wrong_response->response(1005, $ar, $en);
   }
   function DATA_EXIST_BEFORE(): string
@@ -736,11 +736,24 @@ class Fun
     return $this->wrong->wrong_response->response(00, $ar, $en);
   }
 
+  function SEARCH_INVALID(): string
+  {
+    $ar = "SEARCH_INVALID";
+    $en = "SEARCH_INVALID";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
+
 
   function UNKOWN_TYPE_ID(): string
   {
     $ar = "UNKOWN_TYPE_ID";
     $en = "UNKOWN_TYPE_ID";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
+  function UNKOWN_TYPE_SEARCH(): string
+  {
+    $ar = "UNKOWN_TYPE_SEARCH";
+    $en = "UNKOWN_TYPE_SEARCH";
     return $this->wrong->wrong_response->response(00, $ar, $en);
   }
   function UNKOWN_TYPE(): string
@@ -771,7 +784,8 @@ class Fun
           $r .= ",";
         }
       }
-      return $this->SUCCESS_WITH_DATA($r);
+      $data = json_encode(array('count'=> $count,"ids"=>$r));
+      return $this->SUCCESS_WITH_DATA($data);
     } catch (\Throwable $th) {
       return $this->JSON_FORMAT_INVALID();
     }
@@ -794,6 +808,27 @@ class Fun
     if (!$data["id"]) {
       // echo "ff";
       return $this->ID_INVALID();
+    }
+    // echo "ff";
+    return $this->SUCCESS_WITH_DATA($id);
+  }
+  function CHECK_SEARCH_JSON($id): string
+  {
+    // echo 'Current PHP version: ' . phpversion();
+    if (!$this->json_validate($id)) {
+      // echo "ff";
+      return $this->SEARCH_INVALID();
+    }
+    // echo "ff";
+    $data = json_decode($id, true);
+    
+    if (!$data["search"]) {
+      // echo "ff";
+      return $this->SEARCH_INVALID();
+    }
+    if (!$data["searchBy"]) {
+      // echo "ff";
+      return $this->SEARCH_INVALID();
     }
     // echo "ff";
     return $this->SUCCESS_WITH_DATA($id);

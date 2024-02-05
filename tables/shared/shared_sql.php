@@ -15,7 +15,7 @@ function FORIGN_KEY_ID_INNER_JOIN($nativeInnerJoin, $table_name, $id): string
     return $inner;
 }
 
-function read_by_condition_sql($table_name,$columns, $innerJoin, $condition): string
+function read_by_condition_sql($table_name, $columns, $innerJoin, $condition): string
 {
     $sql = "(SELECT $columns FROM $table_name $innerJoin WHERE $condition)";
     // print_r($sql);
@@ -23,18 +23,19 @@ function read_by_condition_sql($table_name,$columns, $innerJoin, $condition): st
 }
 
 
+
 function read_one_column_sql($table_name, $column, $innerJoin, $condition): string
 {
     $sql = "(SELECT {$table_name}.{$column} FROM $table_name $innerJoin WHERE $condition)";
     return $sql;
-}   
+}
 
 function shared_insert_sql($table_name, $columns, $values): string
 {
     $sql = "INSERT INTO `$table_name` $columns VALUES $values";
     return $sql;
 }
-  
+
 function shared_update_sql($table_name, $set_query, $condition): string
 {
     $sql = "UPDATE `$table_name` $set_query WHERE $condition";

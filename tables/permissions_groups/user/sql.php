@@ -16,5 +16,11 @@ class User_PermissionsGroupsSql extends MainSqlPermissionsGroups{
         /////
         return $this->r_permission_id_sql($innerJoin, $condition);
     }
+    function delete_sql($ids): string
+    {
+        $condition = "$this->permission_group_id IN ($ids)";
+        /////
+        return $this->d_sql($condition);
+    }
 }
 ?>

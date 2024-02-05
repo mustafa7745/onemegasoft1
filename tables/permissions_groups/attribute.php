@@ -34,6 +34,7 @@ class PermissionsGroupsAttribute
         $this->initForignkey();
         return json_encode(
             array(
+                "$this->permission_group_id" => $data[$i]["$this->permission_group_id"],
                 "{$this->permissions_attribute->name}" => json_decode($this->permissions_attribute->jsonF($data, $i)),
                 "{$this->groups_attribute->name}" => json_decode($this->groups_attribute->jsonF($data, $i))
             )
