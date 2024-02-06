@@ -4,9 +4,9 @@ class User_PermissionsExecuter extends User_PermissionsSql
 {
 
 
-  function execute_read_sql(): string
+  function execute_read_sql($offset): string
   {
-    $sql = $this->read_sql();
+    $sql = $this->read_sql($offset);
     return shared_execute_read_no_json_sql($sql);
   }
 

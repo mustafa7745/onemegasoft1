@@ -5,6 +5,9 @@ public $name = "permission";
 public $table_name = "permissions";
 public $permission_id = "permission_id";
 public $permission_name = "permission_name";
+public $permission_created_at = "permission_created_at";
+public $permission_updated_at = "permission_updated_at";
+
 
 
 public $json;

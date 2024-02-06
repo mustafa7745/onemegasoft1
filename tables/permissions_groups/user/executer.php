@@ -14,7 +14,13 @@ class User_PermissionsGroupsExecuter extends User_PermissionsGroupsSql
   function execute_delete_sql($ids): string
   {
     $sql = $this->delete_sql($ids);
+    // print_r($sql);
     return shared_execute_delete_sql($sql);
+  }
+  function execute_add_sql($permission_id, $group_id): string
+  {
+    $sql = $this->add_sql("'$permission_id'", "'$group_id'");
+    return shared_execute_insert_sql($sql);
   }
 
 

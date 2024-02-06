@@ -735,6 +735,18 @@ class Fun
     $en = "ID_INVALID";
     return $this->wrong->wrong_response->response(00, $ar, $en);
   }
+  function TAG_NOT_FOUND(): string
+  {
+    $ar = "TAG_NOT_FOUND";
+    $en = "TAG_NOT_FOUND";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
+  function UNKOWN_TAG(): string
+  {
+    $ar = "UNKOWN_TAG";
+    $en = "UNKOWN_TAG";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
 
   function SEARCH_INVALID(): string
   {

@@ -3,13 +3,13 @@ require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/permissions/main_
 class User_PermissionsSql extends MainSqlPermissions
 {
 
-    function read_sql(): string
+    function read_sql($offset): string
     {
         // return "(SELECT $this->device_app_session_id FROM $this->table_name WHERE $this->device_id = $device_id and $this->app_id = $app_id)";
         $innerJoin = "";
-        $condition = "1";
+        $condition = "";
         /////
-        return $this->r_sql($innerJoin, $condition);
+        return $this->r_sql($innerJoin, $condition,$offset);
     }
     function read_in_sql($in_data): string
     {

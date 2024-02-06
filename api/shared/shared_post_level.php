@@ -12,6 +12,7 @@ class SharedPostLevel
     public $device_info;
     public $user_phone;
     public $user_password;
+    public $data;
     function init_shared_post_level1() {
         checkPostValidate();
         $this->app_package_name = $_POST['app_package_name'];
@@ -24,7 +25,7 @@ class SharedPostLevel
     }
 
     function init_shared_post_level2() {
-        array_push($GLOBALS['va'],"user_phone","user_password");
+        array_push($GLOBALS['va'],"user_phone","user_password","data");
         checkPostValidate();
         $this->app_package_name = $_POST['app_package_name'];
         $this->sha = strtoupper($_POST['sha']);
@@ -35,6 +36,12 @@ class SharedPostLevel
         $this->device_info = $_POST['device_info'];
         $this->user_phone = ($_POST['user_phone']);
         $this->user_password = $_POST['user_password'];
+        $this->data = $_POST["data"];
+        
+        if (!fun()->json_validate($this->data)) {
+            echo fun()->JSON_FORMAT_INVALID();
+            exit();
+        }
     }
     
 }

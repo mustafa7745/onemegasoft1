@@ -1,8 +1,8 @@
 <?php
 
-function read_limit_sql($table_name, $innerJoin, $orederdBy, $orederdType, $offset, $limit): string
+function read_limit_sql($table_name,$columns, $innerJoin, $orederdBy, $orederdType, $offset,$condition): string
 {
-    return "(SELECT * FROM $table_name $innerJoin) ORDER BY $orederdBy $orederdType LIMIT $offset,$limit";
+    return "(SELECT $columns FROM $table_name $innerJoin) ORDER BY $orederdBy $orederdType LIMIT $offset,5 $condition";
 }
 
 function NATIVE_INNER_JOIN($table_name, $id): string
