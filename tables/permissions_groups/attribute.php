@@ -7,6 +7,8 @@ class PermissionsGroupsAttribute
     public $permission_group_id = "permission_group_id";
     public $permission_id = "permission_id";
     public $group_id = "group_id";
+    public $permission_group_created_at = "permission_group_created_at";
+    public $permission_group_updated_at = "permission_group_updated_at";
 
     public $permissions_attribute;
     public $groups_attribute;

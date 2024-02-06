@@ -3,12 +3,20 @@ require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/permissions_group
 class User_PermissionsGroupsSql extends MainSqlPermissionsGroups
 {
 
-    function read_by_group_id_sql($group_id): string
+    function read_permission_ids_by_group_id_sql($group_id): string
+    {
+        $innerJoin = "";
+        $condition = "$this->table_name.$this->group_id = $group_id";
+        /////
+        return $this->r_permission_id_sql($innerJoin, $condition);
+    }
+
+    function read_by_group_id_sql($group_id,$offset): string
     {
         $innerJoin = $this->INNER_JOIN();
         $condition = "$this->table_name.$this->group_id = $group_id";
         /////
-        return $this->r_sql($innerJoin, $condition);
+        return $this->r_sql($innerJoin, $condition,$offset);
     }
     function read_permissions_ids_sql($group_id): string
     {

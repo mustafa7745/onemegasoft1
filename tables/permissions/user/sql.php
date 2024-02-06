@@ -7,7 +7,7 @@ class User_PermissionsSql extends MainSqlPermissions
     {
         // return "(SELECT $this->device_app_session_id FROM $this->table_name WHERE $this->device_id = $device_id and $this->app_id = $app_id)";
         $innerJoin = "";
-        $condition = "";
+        $condition = "1";
         /////
         return $this->r_sql($innerJoin, $condition,$offset);
     }
@@ -19,12 +19,15 @@ class User_PermissionsSql extends MainSqlPermissions
         /////
         return $this->r_sql($innerJoin, $condition);
     }
-    function search_by_name_sql($search): string
+    function search_by_name_for_add_to_pg_sql($search,$offset,$group_id): string
     {
-        // return "(SELECT $this->device_app_session_id FROM $this->table_name WHERE $this->device_id = $device_id and $this->app_id = $app_id)";
+        require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/permissions_groups/user/sql.php');
+        $user_permission_group_sql = new User_PermissionsGroupsSql();
+        $permission_ids = $user_permission_group_sql->read_permission_ids_by_group_id_sql($group_id);
+
         $innerJoin = "";
-        $condition = "$this->permission_name LIKE '%$search%'";
+        $condition = "$this->permission_name LIKE '%$search%' AND $this->permission_id NOT IN ($permission_ids)";
         /////
-        return $this->r_sql($innerJoin, $condition);
+        return $this->r_sql($innerJoin, $condition,$offset);
     }
 }

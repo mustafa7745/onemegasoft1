@@ -11,26 +11,11 @@ class ThisClass
   public $controller;
   public $shared_post_level;
   // 
-  public $id;
-  public $type;
 
   function __construct()
   {
     $this->shared_post_level = new SharedPostLevel();
-    array_push($GLOBALS['va'], "id");
-    // 
-    if (isset($_POST["id"]) && $_POST["id"] != null) {
-      check_id($_POST["id"]);
-      $d = json_decode($_POST["id"], TRUE);
-      // print_r($d);
-      $this->id = $d["id"];
-      $this->type = $d["type"];
-
-      checkPosts2($GLOBALS['va']);
-    } else {
-      echo fun()->PARAMETER_INVALID();
-      exit();
-    }
+    checkPosts2($GLOBALS['va']);
   }
   function init()
   {
@@ -55,16 +40,30 @@ class ThisClass
     $v1 = null;
     $this->init();
     // sleep(1);
-    // echo "dd";
-    if ($this->type == "group") {
-      $v1 = $this->controller->read_permissions_groups_by_group_id($this->id);
+    $data = json_decode($this->shared_post_level->data, TRUE);
+    if (isset($data["TAG"]) && isset($data["FROM"])) {
+      if (isset($data["READ_BY"])) {
+        if (isset($data["ID"])) {
+          $TAG = $data["TAG"];
+          $FROM = $data["FROM"];
+          $READ_BY = $data["READ_BY"];
+          $ID = $data["ID"];
+          if ($TAG == "READ") {
+            if ($READ_BY == "GROUP_ID") {
+              $v1 = $this->controller->read_permissions_groups_by_group_id($ID,$FROM);
+            } else
+              return fun()->UNKOWN_READ_BY();
+          } else
+            return fun()->UNKOWN_TAG();
+        } else
+          return fun()->ID_NOT_FOUND();
+      } else
+        return fun()->READ_BY_NOT_FOUND();
     } else
-      fun()->UNKOWN_TYPE();
-
+      return fun()->TAG_NOT_FOUND();
 
     $c1 = json_decode($v1, true);
     if ($c1["result"]) {
-      // print_r($c1["data"]);
       return json_encode($c1["data"]);
     }
     return $v1;

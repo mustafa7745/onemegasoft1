@@ -741,10 +741,28 @@ class Fun
     $en = "TAG_NOT_FOUND";
     return $this->wrong->wrong_response->response(00, $ar, $en);
   }
+  function ID_NOT_FOUND(): string
+  {
+    $ar = "ID_NOT_FOUND";
+    $en = "ID_NOT_FOUND";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
+  function READ_BY_NOT_FOUND(): string
+  {
+    $ar = "READ_BY_NOT_FOUND";
+    $en = "READ_BY_NOT_FOUND";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
   function UNKOWN_TAG(): string
   {
     $ar = "UNKOWN_TAG";
     $en = "UNKOWN_TAG";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
+  function UNKOWN_READ_BY(): string
+  {
+    $ar = "UNKOWN_READ_BY";
+    $en = "UNKOWN_READ_BY";
     return $this->wrong->wrong_response->response(00, $ar, $en);
   }
 
@@ -766,6 +784,24 @@ class Fun
   {
     $ar = "UNKOWN_TYPE_SEARCH";
     $en = "UNKOWN_TYPE_SEARCH";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
+  function UNKOWN_SEARCH_BY(): string
+  {
+    $ar = "UNKOWN_SEARCH_BY";
+    $en = "UNKOWN_SEARCH_BY";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
+  function UNKOWN_CAUSE(): string
+  {
+    $ar = "UNKOWN_CAUSE";
+    $en = "UNKOWN_CAUSE";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
+  function UNKOWN_FORMAT_SEARCH(): string
+  {
+    $ar = "UNKOWN_FORMAT_SEARCH";
+    $en = "UNKOWN_FORMAT_SEARCH";
     return $this->wrong->wrong_response->response(00, $ar, $en);
   }
   function UNKOWN_TYPE(): string

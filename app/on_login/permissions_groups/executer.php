@@ -94,7 +94,7 @@ class PermissionsGroups extends CheckingLevelPermissions
         }
         return $v1;
     }
-    function read_permissions_groups_by_group_id($group_id)
+    function read_permissions_groups_by_group_id($group_id,$offset)
     {
         $v1 = $this->check("READ_PERMISSIONS_GROUPS");
         $c1 = json_decode($v1, true);
@@ -102,7 +102,7 @@ class PermissionsGroups extends CheckingLevelPermissions
             require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/permissions_groups/user/executer.php');
             $user_permission_group_executer = new User_PermissionsGroupsExecuter();
             // print_r($user_app_group_executer->execute_read_by_group_id_sql($group_id));
-            return $user_permission_group_executer->execute_read_by_group_id_sql($group_id);
+            return $user_permission_group_executer->execute_read_by_group_id_sql($group_id,$offset);
         }
         return $v1;
     }

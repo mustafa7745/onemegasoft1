@@ -41,24 +41,27 @@ class ThisClass
     // sleep(1);
     $data = json_decode($this->shared_post_level->data, TRUE);
     // print_r($data);
-    if (isset($data["TAG"])  && isset($data["FROM"])) {
+    if (isset($data["TAG"]) && isset($data["FROM"])) {
       $TAG = $data["TAG"];
       $FROM = $data["FROM"];
       if ($TAG == "READ") {
         $v1 = $this->controller->read_permissions($FROM);
       } elseif ($TAG == "SEARCH") {
-        if (isset($data["SEARCH_BY"])  && isset($data["SEARCH"]) && isset($data["CAUSE"])) {
+        if (isset($data["SEARCH_BY"]) && isset($data["SEARCH"]) && isset($data["CAUSE"]) && isset($data["G_ID"])) {
           $SEARCH_BY = $data["SEARCH_BY"];
           $SEARCH = $data["SEARCH"];
           $CAUSE = $data["CAUSE"];
+          $G_ID =  $data["G_ID"];
+          // 
           if ($SEARCH_BY == "NAME") {
-            // if (condition) {
-            //   # code...
-            // }
-            
-          }
-          return fun()->UNKOWN_SEARCH_BY();
-        }
+            if ($CAUSE == "ADD_TO_PG") {
+              $v1 = $this->controller->search_by_name_for_add_to_pg($SEARCH, $FROM,$G_ID);
+            } else
+              return fun()->UNKOWN_CAUSE();
+          } else
+            return fun()->UNKOWN_SEARCH_BY();
+        } else
+          return fun()->UNKOWN_FORMAT_SEARCH();
       } else
         return fun()->UNKOWN_TAG();
     } else
@@ -70,7 +73,6 @@ class ThisClass
 
     $c1 = json_decode($v1, true);
     if ($c1["result"]) {
-
       return json_encode($c1["data"]);
     }
     return $v1;

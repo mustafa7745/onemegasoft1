@@ -114,14 +114,14 @@ class Permissions extends CheckingLevelPermissions
         return $user_permissions_executer->execute_read_permission_from_pg_sql($id);
     }
 
-    function search_by_name($search)
+    function search_by_name_for_add_to_pg($search,$offset,$group_id)
     {
         $v1 = $this->check("READ_PERMISSIONS");
         $c1 = json_decode($v1, true);
         if ($c1["result"]) {
             require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/permissions/user/executer.php');
             $user_permissions_executer = new User_PermissionsExecuter();
-            return $user_permissions_executer->execute_search_by_name_sql($search);
+            return $user_permissions_executer->execute_search_by_name_for_add_to_pg_sql($search,$offset,$group_id);
         }
         return $v1;
 
