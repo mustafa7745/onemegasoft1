@@ -82,6 +82,7 @@ class PermissionsGroups extends CheckingLevelPermissions
                 if ($c1["result"]) {
                     if (isset($this->app_data["user_id"]) and $this->app_data["user_id"] != null) {
                         if ($this->app_data["user_session_id"] != null) {
+                            // print_r($this->app_data);
                             return fun()->SUCCESS_NO_DATA();
                         }
                         return fun()->USER_SESSION_NOT_FOUND_PLEASE_LOGIN_AGAIN();

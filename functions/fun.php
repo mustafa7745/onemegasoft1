@@ -759,6 +759,12 @@ class Fun
     $en = "UNKOWN_TAG";
     return $this->wrong->wrong_response->response(00, $ar, $en);
   }
+  function UNKOWN_ATTRIBUTE(): string
+  {
+    $ar = "UNKOWN_ATTRIBUTE";
+    $en = "UNKOWN_ATTRIBUTE";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
   function UNKOWN_READ_BY(): string
   {
     $ar = "UNKOWN_READ_BY";

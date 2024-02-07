@@ -1,43 +1,27 @@
 <?php
 $root = "onemegasoft1";
-require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/app/on_login/permissions_groups/executer.php");
+require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/app/on_login/permissions/executer.php");
 require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/api/shared/shared_post_level.php");
 /////////////////
 
 class ThisClass
 {
-
   // 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
   public $controller;
   public $shared_post_level;
   // 
-  public $group_id;
-  public $permission_id;
 
   function __construct()
   {
     $this->shared_post_level = new SharedPostLevel();
-
-    array_push($GLOBALS['va'], "group_id");
-    array_push($GLOBALS['va'], "permission_id");
-
-    // 
-    if (isset($_POST["group_id"]) && $_POST["group_id"] != null && isset($_POST["permission_id"]) && $_POST["permission_id"] != null) {
-    //  echo"gg";
-      $this->group_id = $_POST["group_id"];
-     $this->permission_id = $_POST["permission_id"];
-      checkPosts2($GLOBALS['va']);
-    } else {
-      echo fun()->PARAMETER_INVALID();
-      exit();
-    }
+    checkPosts2($GLOBALS['va']);
   }
   function init()
   {
     // echo "dd";
     $this->shared_post_level->init_shared_post_level2();
     // echo "dd";
-    $this->controller = new PermissionsGroups(
+    $this->controller = new Permissions(
       $this->shared_post_level->app_package_name,
       $this->shared_post_level->sha,
       $this->shared_post_level->app_version,
@@ -49,17 +33,34 @@ class ThisClass
       $this->shared_post_level->user_password
     );
   }
-  // 
+
   function main(): string
   {
-    $v1 = null;
+    $v1 = '';
     $this->init();
-    sleep(5);
-    // echo "dd";
-      $v1 = $this->controller->add_permission_group($this->permission_id,$this->group_id);
+    // sleep(1);
+    $data = json_decode($this->shared_post_level->data, TRUE);
+    // print_r($data);
+    if (isset($data["TAG"])) {
+      $TAG = $data["TAG"];
+      if ($TAG == "ADD") {
+        if (isset($data["PERMISSION_NAME"])) {
+          $PERMISSION_NAME = $data["PERMISSION_NAME"];
+
+          $v1 = $this->controller->add_permission($PERMISSION_NAME);
+        } else
+          return fun()->UNKOWN_ATTRIBUTE();
+      } else
+        return fun()->UNKOWN_TAG();
+    } else
+      return fun()->TAG_NOT_FOUND();
+
+
+
+
+
     $c1 = json_decode($v1, true);
     if ($c1["result"]) {
-      // print_r($c1["data"]);
       return json_encode($c1["data"]);
     }
     return $v1;

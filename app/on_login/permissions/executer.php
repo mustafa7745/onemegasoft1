@@ -124,7 +124,13 @@ class Permissions extends CheckingLevelPermissions
             return $user_permissions_executer->execute_search_by_name_for_add_to_pg_sql($search,$offset,$group_id);
         }
         return $v1;
-
+    }
+    //
+    function add_permission($permission_name)
+    {
+        require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/permissions/user/executer.php');
+        $user_permissions_executer = new User_PermissionsExecuter();
+        return $user_permissions_executer->execute_add_permission_sql($permission_name); 
     }
 
 
