@@ -10,7 +10,7 @@ class User_PermissionsExecuter extends User_PermissionsSql
     return shared_execute_read_no_json_sql($sql);
   }
 
-  
+
   function execute_read_permission_from_pg_sql($group_id): string
   {
     require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/permissions_groups/user/sql.php');
@@ -19,11 +19,18 @@ class User_PermissionsExecuter extends User_PermissionsSql
     $sql = $this->read_in_sql($in_data);
     return shared_execute_read_no_json_sql($sql);
   }
-  function execute_search_by_name_for_add_to_pg_sql($search,$offset,$group_id): string
+  function execute_search_by_name_for_add_to_pg_sql($search, $offset, $group_id): string
   {
-    $sql = $this->search_by_name_for_add_to_pg_sql($search,$offset,"'$group_id'");
+    $sql = $this->search_by_name_for_add_to_pg_sql($search, $offset, "'$group_id'");
     // print_r($sql);
     return shared_execute_read_no_json_sql($sql);
+  }
+  function execute_add_permission_sql($permission_name): string
+  {
+    $permission_id = uniqid(rand(), false);
+    $sql = $this->add_permission_sql("'$permission_id'", "'$permission_name'");
+    // print_r($sql);
+    return shared_execute_insert_sql($sql);
   }
 
   function execute_search_by_name_sql($search,$offset): string
