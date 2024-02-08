@@ -30,4 +30,12 @@ class User_PermissionsSql extends MainSqlPermissions
         /////
         return $this->r_sql($innerJoin, $condition,$offset);
     }
+    function search_by_name_sql($search,$offset): string
+    {
+       
+        $innerJoin = "";
+        $condition = "$this->permission_name LIKE '%$search%'";
+        /////
+        return $this->r_sql($innerJoin, $condition,$offset);
+    }
 }

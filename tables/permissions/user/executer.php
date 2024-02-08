@@ -26,5 +26,12 @@ class User_PermissionsExecuter extends User_PermissionsSql
     return shared_execute_read_no_json_sql($sql);
   }
 
+  function execute_search_by_name_sql($search,$offset): string
+  {
+    $sql = $this->search_by_name_sql($search,$offset);
+    // print_r($sql);
+    return shared_execute_read_no_json_sql($sql);
+  }
+
 }
 ?>

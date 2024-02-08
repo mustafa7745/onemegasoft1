@@ -47,17 +47,22 @@ class ThisClass
       if ($TAG == "READ") {
         $v1 = $this->controller->read_permissions($FROM);
       } elseif ($TAG == "SEARCH") {
-        if (isset($data["SEARCH_BY"]) && isset($data["SEARCH"]) && isset($data["CAUSE"]) && isset($data["G_ID"])) {
+        // print_r(isset($data["SEARCH_BY"]) );
+        if (isset($data["SEARCH_BY"]) && isset($data["SEARCH"])) {
           $SEARCH_BY = $data["SEARCH_BY"];
           $SEARCH = $data["SEARCH"];
-          $CAUSE = $data["CAUSE"];
-          $G_ID =  $data["G_ID"];
-          // 
           if ($SEARCH_BY == "NAME") {
-            if ($CAUSE == "ADD_TO_PG") {
-              $v1 = $this->controller->search_by_name_for_add_to_pg($SEARCH, $FROM,$G_ID);
-            } else
-              return fun()->UNKOWN_CAUSE();
+            if (isset($data["CAUSE"]) && isset($data["G_ID"])) {
+              $CAUSE = $data["CAUSE"];
+              $G_ID =  $data["G_ID"];
+              // 
+              if ($CAUSE == "ADD_TO_PG") {
+                $v1 = $this->controller->search_by_name_for_add_to_pg($SEARCH, $FROM, $G_ID);
+              } else
+                return fun()->UNKOWN_CAUSE();
+            } else {
+              $v1 = $this->controller->search_by_name($SEARCH, $FROM);
+            }
           } else
             return fun()->UNKOWN_SEARCH_BY();
         } else
