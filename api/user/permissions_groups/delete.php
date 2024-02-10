@@ -17,14 +17,13 @@ class ThisClass
   function __construct()
   {
     $this->shared_post_level = new SharedPostLevel();
-    array_push($GLOBALS['va'], "ids");
-    checkPosts2($GLOBALS['va']);
-    $v1 = check_deleted_ids();
-    $c1 = json_decode($v1, true);
-    $c1 = json_decode($c1['data'], True);
-    $this->ids = $c1['ids'];
-    $this->count = $c1['count'];
-
+    // array_push($GLOBALS['va'], "ids");
+    // checkPosts2($GLOBALS['va']);
+    // $v1 = check_deleted_ids();
+    // $c1 = json_decode($v1, true);
+    // $c1 = json_decode($c1['data'], True);
+    // $this->ids = $c1['ids'];
+    // $this->count = $c1['count'];
   }
   function init()
   {
@@ -47,8 +46,35 @@ class ThisClass
   function main(): string
   {
     $this->init();
-    sleep(5);
-    $v1 = $this->controller->delete_permissions_groups($this->ids);
+    // sleep(5);
+    $data = json_decode($this->shared_post_level->data, TRUE);
+    if (isset($data["TAG"])) {
+      $TAG = $data["TAG"];
+    
+      if ($TAG == "DELETE") {
+        if (isset($data["IDS"])) {
+
+          $IDS = $data["IDS"];
+          $IDS = json_encode($IDS);
+          
+          $v1 = fun()->CONVERT_IDS_TO_LIST($IDS);
+          $c1 = json_decode($v1, true);
+          // print_r();
+          if ($c1["result"]) {
+            $data = json_decode($c1["data"],true);
+            $IDS = $data['ids'];
+            // print_r($data);
+            $v1 = $this->controller->delete_permissions_groups($IDS);
+          } else
+            return $v1;
+        } else
+          return fun()->IDS_NOT_FOUND();
+      } else
+        return fun()->UNKOWN_TAG();
+    } else
+      return fun()->TAG_NOT_FOUND();
+
+
     $c1 = json_decode($v1, true);
     if ($c1["result"]) {
       // print_r($c1["data"]);

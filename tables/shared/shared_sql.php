@@ -2,7 +2,9 @@
 
 function read_limit_sql($table_name,$columns, $innerJoin, $orederdBy, $orederdType, $offset,$condition): string
 {
-    return "(SELECT $columns FROM $table_name $innerJoin WHERE $condition) ORDER BY $orederdBy $orederdType LIMIT $offset,3";
+    $sql = "(SELECT $columns FROM $table_name $innerJoin WHERE $condition) ORDER BY $orederdBy $orederdType LIMIT $offset,3";
+    // print_r($sql);
+    return $sql;
 }
 
 function NATIVE_INNER_JOIN($table_name, $id): string

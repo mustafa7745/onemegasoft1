@@ -132,6 +132,19 @@ class Permissions extends CheckingLevelPermissions
         $user_permissions_executer = new User_PermissionsExecuter();
         return $user_permissions_executer->execute_add_permission_sql($permission_name); 
     }
+    function delete_permission($ids)
+    {
+        require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/permissions/user/executer.php');
+        $user_permissions_executer = new User_PermissionsExecuter();
+        return $user_permissions_executer->execute_delete_sql($ids); 
+    }
+    function edit_permission($name,$id)
+    {
+        require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/permissions/user/executer.php');
+        $user_permissions_executer = new User_PermissionsExecuter();
+        return $user_permissions_executer->execute_update_name_sql($name,$id); 
+    }
+
     function search_by_name($search,$offset)
     {
         $v1 = $this->check("READ_PERMISSIONS");

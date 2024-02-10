@@ -38,35 +38,19 @@ class ThisClass
   {
     $v1 = '';
     $this->init();
-    // sleep(3);
+    // sleep(1);
     $data = json_decode($this->shared_post_level->data, TRUE);
     // print_r($data);
-    if (isset($data["TAG"]) && isset($data["FROM"])) {
+    if (isset($data["TAG"])) {
       $TAG = $data["TAG"];
-      $FROM = $data["FROM"];
-      if ($TAG == "READ") {
-        $v1 = $this->controller->read_permissions($FROM);
-      } elseif ($TAG == "SEARCH") {
-        // print_r(isset($data["SEARCH_BY"]) );
-        if (isset($data["SEARCH_BY"]) && isset($data["SEARCH"])) {
-          $SEARCH_BY = $data["SEARCH_BY"];
-          $SEARCH = $data["SEARCH"];
-          if ($SEARCH_BY == "NAME") {
-            if (isset($data["CAUSE"]) && isset($data["G_ID"])) {
-              $CAUSE = $data["CAUSE"];
-              $G_ID =  $data["G_ID"];
-              // 
-              if ($CAUSE == "ADD_TO_PG") {
-                $v1 = $this->controller->search_by_name_for_add_to_pg($SEARCH, $FROM, $G_ID);
-              } else
-                return fun()->UNKOWN_CAUSE();
-            } else {
-              $v1 = $this->controller->search_by_name($SEARCH, $FROM);
-            }
-          } else
-            return fun()->UNKOWN_SEARCH_BY();
+      if ($TAG == "EDIT") {
+        if (isset($data["PERMISSION_NAME"]) && isset($data["ID"])) {
+          $PERMISSION_NAME = $data["PERMISSION_NAME"];
+          $ID = $data["ID"];
+
+          $v1 = $this->controller->edit_permission($PERMISSION_NAME,$ID);
         } else
-          return fun()->UNKOWN_FORMAT_SEARCH();
+          return fun()->UNKOWN_ATTRIBUTE();
       } else
         return fun()->UNKOWN_TAG();
     } else

@@ -20,6 +20,18 @@ class MainSqlPermissions extends PermissionsAttribute
         return read_limit_sql($table_name, $column, $innerJoin,$orederdBy,$orederdType,$offset, $condition);
     }
    
+    function d_sql($condition): string
+    {
+        $table_name = $this->table_name;
+        /////
+        return delete_sql($table_name, $condition);
+    }
+    function upd_sql($set_query,$condition): string
+    {
+        $table_name = $this->table_name;
+        /////
+        return shared_update_sql($table_name,$set_query, $condition);
+    }
 
 }
 ?>

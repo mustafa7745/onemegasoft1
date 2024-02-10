@@ -816,19 +816,35 @@ class Fun
     $en = "UNKOWN_TYPE";
     return $this->wrong->wrong_response->response(00, $ar, $en);
   }
+  function IDS_NOT_FORMATTED(): string
+  {
+    $ar = "IDS_NOT_FORMATTED";
+    $en = "IDS_NOT_FORMATTED";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
+  function IDS_NOT_FOUND(): string
+  {
+    $ar = "IDS_NOT_FOUND";
+    $en = "IDS_NOT_FOUND";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
   function CONVERT_IDS_TO_LIST($ids_json): string
   {
     try {
-      $data = json_decode($ids_json, true);
-      if (!$data)
+      if (!$this->json_validate($ids_json)) {
+        // echo "ff";
         return $this->JSON_FORMAT_INVALID();
-      $i = 1;
-      foreach ($data as $key => $value) {
-        if ($key != $i)
-          return $this->JSON_FORMAT_INVALID();
-        $i++;
       }
-
+      $data = json_decode($ids_json, true);
+      // if (!$data)
+      //   return $this->JSON_FORMAT_INVALID();
+      // $i = 1;
+      // foreach ($data as $key => $value) {
+      //   if ($key != $i)
+      //     return $this->JSON_FORMAT_INVALID();
+      //   $i++;
+      // }
+     
 
       $count = count($data);
       $r = "";

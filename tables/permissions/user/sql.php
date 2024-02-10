@@ -47,4 +47,17 @@ class User_PermissionsSql extends MainSqlPermissions
         /////
         return $this->r_sql($innerJoin, $condition,$offset);
     }
+    function delete_sql($ids): string
+    {
+        $condition = "$this->permission_id IN ($ids)";
+        /////
+        return $this->d_sql($condition);
+    }
+    function update_name_sql($name,$id): string
+    {
+        $set_query = "SET $this->permission_name = $name";
+        $condition = "$this->permission_id = $id";
+        /////
+        return $this->upd_sql( $set_query,$condition);
+    }
 }

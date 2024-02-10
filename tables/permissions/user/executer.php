@@ -40,5 +40,18 @@ class User_PermissionsExecuter extends User_PermissionsSql
     return shared_execute_read_no_json_sql($sql);
   }
 
+  function execute_delete_sql($ids): string
+  {
+    $sql = $this->delete_sql($ids);
+    // print_r($sql);
+    return shared_execute_delete_sql($sql);
+  }
+
+  function execute_update_name_sql($name,$id): string
+  {
+    $sql = $this->update_name_sql("'$name'","'$id'");
+    // print_r($sql);
+    return shared_execute_delete_sql($sql);
+  }
 }
 ?>
