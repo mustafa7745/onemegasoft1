@@ -128,9 +128,15 @@ class Permissions extends CheckingLevelPermissions
     //
     function add_permission($permission_name)
     {
-        require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/permissions/user/executer.php');
+        // $v1 = $this->check("ADD_PERMISSION");
+        // $c1 = json_decode($v1, true);
+        // if ($c1["result"]) {
+           require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/permissions/user/executer.php');
         $user_permissions_executer = new User_PermissionsExecuter();
         return $user_permissions_executer->execute_add_permission_sql($permission_name); 
+        // }
+        // return $v1;
+       
     }
     function delete_permission($ids)
     {
@@ -140,9 +146,15 @@ class Permissions extends CheckingLevelPermissions
     }
     function edit_permission($name,$id)
     {
-        require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/permissions/user/executer.php');
+        // $v1 = $this->check("UPDATE_PERMISSION_NAME");
+        // $c1 = json_decode($v1, true);
+        // if ($c1["result"]) {
+           require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/permissions/user/executer.php');
         $user_permissions_executer = new User_PermissionsExecuter();
         return $user_permissions_executer->execute_update_name_sql($name,$id); 
+        // }
+        // return $v1;
+       
     }
 
     function search_by_name($search,$offset)
