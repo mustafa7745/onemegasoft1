@@ -53,8 +53,9 @@ class Groups extends CheckingLevelPermissions
                 $this->app_device_token
             );
         $this->check->initUserAttr($this->user_phone, $this->user_password);
-
+        
         // echo "hh";
+
     }
 
     function read($read_type)

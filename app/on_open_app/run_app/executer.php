@@ -92,6 +92,6 @@ class CheckingAppExecuter extends CheckingLevelPermissions
             }
             return $v1;
         }
-        return fun()->APP_NOT_EXACTLY_AUTHORIAED();
+        return fun()->UNKWON_DEVICE_TYPE();
     }
 }

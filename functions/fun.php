@@ -260,6 +260,12 @@ class Fun
     $en = "APP_NOT_EXACTLY_AUTHORIAED";
     return $this->wrong->wrong_response->response(1013, $ar, $en);
   }
+  function UNKWON_DEVICE_TYPE(): string
+  {
+    $ar = "UNKWON_DEVICE_TYPE";
+    $en = "UNKWON_DEVICE_TYPE";
+    return $this->wrong->wrong_response->response(1013.5, $ar, $en);
+  }
   function APP_UNDER_MAINTENANCE(): string
   {
     $ar = "التطبيق في حالة صيانة و تحديث";
