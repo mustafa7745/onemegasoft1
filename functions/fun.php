@@ -386,6 +386,12 @@ class Fun
     $en = "REQUEST_CODE_BLOCKED_FOR_TIME";
     return $this->wrong->wrong_response->response(1081, $ar, $en);
   }
+  function POST_DATA_NOT_FOUND($num): string
+  {
+    $ar = "DATA".$num."_NOT_FOUND";
+    $en = "DATA".$num."_NOT_FOUND";
+    return $this->wrong->wrong_response->response(1081, $ar, $en);
+  }
 
   function REQUEST_CODE_AFTER_TIME($data): string
   {
@@ -729,10 +735,10 @@ class Fun
     return $this->wrong->wrong_response->response(1080, $ar, $en);
   }
 
-  function JSON_FORMAT_INVALID(): string
+  function JSON_FORMAT_INVALID($data = ""): string
   {
-    $ar = "JSON_FORMAT_INVALID";
-    $en = "JSON_FORMAT_INVALID";
+    $ar = "JSON_FORMAT_INVALID_".$data;
+    $en = "JSON_FORMAT_INVALID_".$data;;
     return $this->wrong->wrong_response->response(00, $ar, $en);
   }
   function ID_INVALID(): string

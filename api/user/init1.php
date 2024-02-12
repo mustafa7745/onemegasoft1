@@ -12,27 +12,24 @@ class ThisClass
 
   function __construct()
   {
-    print_r($_POST["data1"]);
-    // print_r($_POST);
     $this->shared_data = new Shared_Data();
-    // checkPosts1($GLOBALS['va']);
+    $this->shared_data->data1();
+    print_r($this->shared_data->getDeviceInfo());
   }
   
   function init()
   {
-    $this->shared_data->data1();
-    $this->controller = new CheckingInitDeviceSessionIp(
-      $this->shared_data->app_package_name,
-      $this->shared_data->sha,
-      $this->shared_data->app_version,
-      $this->shared_data->device_type_name,
-      $this->shared_data->device_id,
-      $this->shared_data->device_info,
-      $this->shared_data->app_device_token
-    );
+    // $this->shared_data->data1();
+    // $this->controller = new CheckingInitDeviceSessionIp(
+    //   $this->shared_data->app_package_name,
+    //   $this->shared_data->sha,
+    //   $this->shared_data->app_version,
+    //   $this->shared_data->device_type_name,
+    //   $this->shared_data->device_id,
+    //   $this->shared_data->device_info,
+    //   $this->shared_data->app_device_token
+    // );
     // $this->controller->initUserAttr( $user_phone, $user_password);
-
-
   }
   // {"app_package_name":"","sha":"","app_version":"","device_type_name":"","device_id":"","device_info":"","app_device_token":""}
 

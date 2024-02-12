@@ -1,10 +1,134 @@
 <?php
 class FilterPostedData
 {
+    public $data;
+    function __construct($data = "")
+    {
+        $this->data = $data;
+    }
+    // public data1(){
+
+    // }
+    function checkAppPackageName(): string
+    {
+        $name = "app_package_name";
+        $checked = "com.onemegasoft.";
+        if (
+            !isset($this->data[$name]) ||
+            empty($this->data[$name]) ||
+            strlen($this->data[$name]) > 30 ||
+            !str_starts_with($this->data[$name], $checked)
+        ) {
+            return fun()->PARAMETER_INVALID();
+        }
+        $value = $this->data[$name];
+        $after = substr($value, strlen($checked), strlen($value));
+        if (!ctype_alpha($after)) {
+            return fun()->PARAMETER_INVALID();
+        }
+        return fun()->SUCCESS_WITH_DATA($value);
+    }
+    // 
+    function checkAppSha(): string
+    {
+        $name = "sha";
+        if (!isset($this->data[$name]) || empty($this->data[$name])) {
+            return fun()->APP_SHA_MUST_BE_FORMATTED();
+        }
+        $value = $this->data[$name];
+        // echo ;
+        if (strlen($value) != 95) {
+            return fun()->APP_SHA_MUST_BE_FORMATTED();
+        }
+        $array = array('\'', '"', "'", ',', ';', '<', '>', '/', '*', '#', "=");
+        for ($i = 0; $i < count($array); $i++) {
+            if (str_contains($value, $array[$i])) {
+                return fun()->APP_SHA_MUST_BE_FORMATTED();
+            }
+        }
+        return fun()->SUCCESS_WITH_DATA($value);
+    }
+    // 
+
+    function checkAppVersion(): string
+    {
+        $name = "app_version";
+        if (!isset($this->data[$name]) || empty($this->data[$name])) {
+            return fun()->APP_VERSION_MUST_BE_NUMBER();
+        }
+        $value = $this->data[$name];
+        if (strlen($value) > 3) {
+            return fun()->APP_VERSION_MUST_BE_NUMBER();
+        }
+        if (!is_numeric($value)) {
+            return fun()->APP_VERSION_MUST_BE_NUMBER();
+        }
+        return fun()->SUCCESS_WITH_DATA($value);
+    }
+    // 
+    function checkDeviceId(): string
+    {
+        $name = "device_id";
+        if (!isset($this->data[$name]) || empty($this->data[$name])) {
+            return fun()->DEVICE_ID_MUST_BE_FORMATTED();
+        }
+        $value = $this->data[$name];
+        // echo strlen($value);
+        if (strlen($value) > 30) {
+            return fun()->DEVICE_ID_MUST_BE_FORMATTED();
+        }
+        $array = array('\'', "'", '"', ',', ';', '<', '>', '/', '*', '#', "=");
+        for ($i = 0; $i < count($array); $i++) {
+            if (str_contains($value, $array[$i])) {
+                return fun()->DEVICE_ID_MUST_BE_FORMATTED();
+            }
+        }
+        return fun()->SUCCESS_WITH_DATA($value);
+    }
+    // 
+    function checkDeviceTypeName(): string
+    {
+        $name = "device_type_name";
+        if (!isset($this->data[$name]) || empty($this->data[$name])) {
+            return fun()->PARAMETER_INVALID();
+        }
+        $value = $this->data[$name];
+        $array = array('android', 'ios', "browser");
+        if (!in_array($value, $array)) {
+            return fun()->DEVICE_TYPE_UNKNOWN();
+        }
+
+        return fun()->SUCCESS_WITH_DATA($value);
+    }
+    // 
+    function checkDeviceInfo(): string
+    {
+        $name = "device_info";
+        if (!isset($this->data[$name]) || empty($this->data[$name])) {
+            return fun()->JSON_FORMAT_INVALID("DEVCIE_INFO");
+        }
+        print_r($this->data[$name]);
+        if (fun()->json_validate($this->data[$name])) {
+            return fun()->JSON_FORMAT_INVALID("DEVCIE_INFO");
+        }
+        $value = $this->data[$name];
+        // echo strlen($value);
+        if (strlen($value) > 20) {
+            return fun()->DEVICE_INFO_MUST_BE_FORMATTED();
+        }
+        $array = array('\'', "'", ',', ';', '<', '>', '/', '*', '#', "=");
+        for ($i = 0; $i < count($array); $i++) {
+            if (str_contains($value, $array[$i])) {
+                return fun()->DEVICE_INFO_MUST_BE_FORMATTED();;
+            }
+        }
+        return fun()->SUCCESS_WITH_DATA($value);
+    }
+    // 
     function filterAppPackageName(Fun $fun): string
     {
         $name = "app_package_name";
-      
+
         $checked = "com.onemegasoft.";
         if (
             !isset($_POST[$name]) ||
@@ -13,8 +137,8 @@ class FilterPostedData
             !str_starts_with($_POST[$name], $checked)
         ) {
             return $fun->PARAMETER_INVALID();
-        } 
-         $value = $_POST[$name];
+        }
+        $value = $_POST[$name];
         $after = substr($value, strlen($checked), strlen($value));
         if (!ctype_alpha($after)) {
             return $fun->PARAMETER_INVALID();
@@ -23,7 +147,6 @@ class FilterPostedData
 
 
         return $fun->SUCCESS_NO_DATA();
-
     }
     function filterAppSha(Fun $fun): string
     {
@@ -45,11 +168,10 @@ class FilterPostedData
 
 
         return $fun->SUCCESS_NO_DATA();
-
     }
 
 
-    function filterAppVersion( Fun $fun): string
+    function filterAppVersion(Fun $fun): string
     {
         $name = "app_version";
         if (!isset($_POST[$name]) || empty($_POST[$name])) {
@@ -63,10 +185,9 @@ class FilterPostedData
             return $fun->APP_VERSION_MUST_BE_NUMBER();
         }
         return $fun->SUCCESS_NO_DATA();
-
     }
 
-    function filterDeviceId( Fun $fun): string
+    function filterDeviceId(Fun $fun): string
     {
         $name = "device_id";
         if (!isset($_POST[$name]) || empty($_POST[$name])) {
@@ -81,13 +202,11 @@ class FilterPostedData
         for ($i = 0; $i < count($array); $i++) {
             if (str_contains($value, $array[$i])) {
                 return $fun->DEVICE_ID_MUST_BE_FORMATTED();
-
             }
         }
         return $fun->SUCCESS_NO_DATA();
-
     }
-    function filterDeviceInfo( Fun $fun): string
+    function filterDeviceInfo(Fun $fun): string
     {
         $name = "device_info";
         if (!isset($_POST[$name]) || empty($_POST[$name])) {
@@ -101,8 +220,7 @@ class FilterPostedData
         $array = array('\'', "'", ',', ';', '<', '>', '/', '*', '#', "=");
         for ($i = 0; $i < count($array); $i++) {
             if (str_contains($value, $array[$i])) {
-                return $fun->DEVICE_INFO_MUST_BE_FORMATTED();
-                ;
+                return $fun->DEVICE_INFO_MUST_BE_FORMATTED();;
             }
         }
 
@@ -110,9 +228,8 @@ class FilterPostedData
             return $fun->DEVICE_INFO_MUST_BE_FORMATTED();
         }
         return $fun->SUCCESS_NO_DATA();
-
     }
-    function filterDeviceToken( Fun $fun): string
+    function filterDeviceToken(Fun $fun): string
     {
         $name = "app_device_token";
         if (!isset($_POST[$name]) || empty($_POST[$name])) {
@@ -132,7 +249,7 @@ class FilterPostedData
 
         return $fun->SUCCESS_NO_DATA();
     }
-    function filterDeviceTypeName( Fun $fun): string
+    function filterDeviceTypeName(Fun $fun): string
     {
         $name = "device_type_name";
         if (!isset($_POST[$name]) || empty($_POST[$name])) {
@@ -155,7 +272,7 @@ class FilterPostedData
         }
         $value = $_POST[$name];
         if (!is_numeric($value)) {
-            
+
             return $fun->USER_PHONE_MUST_BE_FORMATTED();
         }
         $array = array("967");
@@ -164,15 +281,14 @@ class FilterPostedData
                 return $fun->USER_PHONE_MUST_BE_FORMATTED();
             }
         }
-        if (str_starts_with($value,"967")) {
+        if (str_starts_with($value, "967")) {
             if (strlen($value) != 12) {
                 return $fun->USER_PHONE_MUST_BE_FORMATTED();
             }
         }
-      
-      
-        return $fun->SUCCESS_NO_DATA();
 
+
+        return $fun->SUCCESS_NO_DATA();
     }
     function filterUserPassword(Fun $fun): string
     {
@@ -185,22 +301,21 @@ class FilterPostedData
             // echo "dd";
             return $fun->USER_PASSWORD_INVAILD();
         }
-        if (preg_match("/[^A-Za-z0-9]/",$value)) {
+        if (preg_match("/[^A-Za-z0-9]/", $value)) {
             return $fun->USER_PASSWORD_INVAILD();
         }
-        if (!preg_match("/[0-9]/",$value)) {
+        if (!preg_match("/[0-9]/", $value)) {
             return $fun->USER_PASSWORD_INVAILD();
         }
-        if (!preg_match("/[A-Za-z]/",$value)) {
+        if (!preg_match("/[A-Za-z]/", $value)) {
             return $fun->USER_PASSWORD_INVAILD();
         }
-      
-      
-        return $fun->SUCCESS_NO_DATA();
 
+
+        return $fun->SUCCESS_NO_DATA();
     }
 
-    function filterID($name1,Fun $fun): string
+    function filterID($name1, Fun $fun): string
     {
         $name = $name1;
         if (!isset($_POST[$name]) || empty($_POST[$name])) {
@@ -217,12 +332,8 @@ class FilterPostedData
                 return $fun->ID_MUST_BE_FORMATTED();
             }
         }
-      
-      
+
+
         return $fun->SUCCESS_NO_DATA();
-
     }
-
 }
-
-?>
