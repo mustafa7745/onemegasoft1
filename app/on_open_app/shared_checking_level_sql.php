@@ -92,6 +92,7 @@ class SharedCheckingLevelSql
     // echo $permission_group_id;
     // print_r($device_app_ip_session_id);
     $sql = "SELECT 
+        ($group_id) as group_id,
         ($permission_group_id) as permission_group_id,
         --
         ($permission_ium) as permission_ium,

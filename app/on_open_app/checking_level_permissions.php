@@ -4,7 +4,7 @@ class CheckingLevelPermissions
 {
     private $permission_name;
 
-    function check_all($data,$app_version, $permission_name)
+    function check_all($data, $app_version, $permission_name)
     {
         $this->permission_name = $permission_name;
         if (isset($data["user_id"]) and $data["user_id"] != null) {
@@ -16,7 +16,7 @@ class CheckingLevelPermissions
             }
             return $v1;
         }
-       
+
 
         $v1 = $this->check_anonymous($data, $app_version, $permission_name);
         $c1 = json_decode($v1, true);
@@ -58,20 +58,24 @@ class CheckingLevelPermissions
 
     private function check_permission($data, $app_version)
     {
-        if ($data["permission_group_id"] != null) {
-            if (!$data["permission_ium"]) {
-                if (!$data["permission_iru"]) {
-                    return $this->check_apps_level($data);
+        if ($data["group_id"] != null) {
+            if ($data["permission_group_id"] != null) {
+                if (!$data["permission_ium"]) {
+                    if (!$data["permission_iru"]) {
+                        return $this->check_apps_level($data);
+                    }
+                    // print_r($data["app_version"]);
+                    if ($data["app_version"] <= $app_version) {
+                        return $this->check_apps_level($data);
+                    }
+                    return fun()->PERMISSION_REQUIRED_UPDATE($this->permission_name);
                 }
-                // print_r($data["app_version"]);
-                if ($data["app_version"] <= $app_version) {
-                    return $this->check_apps_level($data);
-                }
-                return fun()->PERMISSION_REQUIRED_UPDATE($this->permission_name);
+                return fun()->PERMISSION_UNDER_MAINTANANCE($this->permission_name);
             }
-            return fun()->PERMISSION_UNDER_MAINTANANCE($this->permission_name);
+            return fun()->NOT_FOUND_IN_THIS_GROUP_PERMISSIONS($this->permission_name);
         }
-        return fun()->NOT_FOUND_IN_THIS_GROUP_PERMISSIONS($this->permission_name);
+        return fun()->APP_NOT_HAVE_GROUP();
+
     }
 
     private function check_apps_level($data)

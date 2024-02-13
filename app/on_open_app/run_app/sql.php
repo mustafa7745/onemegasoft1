@@ -1,5 +1,7 @@
 <?php
 require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/apps/anonymous/sql.php');
+require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/apps_groups/anonymous/sql.php');
+
 require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/devices_types/anonymous/sql.php');
 require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/permissions/anonymous/sql.php');
 require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/permissions_groups/anonymous/sql.php');
@@ -19,6 +21,7 @@ class CheckingAppSql
   public $permission_name = "RUN_APP";
   // 
   private $anonymous_apps_sql;
+  private $anonymous_apps_groups_sql;
   private $anonymous_devices_types_sql;
   private $anonymous_permissions_sql;
   private $anonymous_permissions_groups_sql;
@@ -34,6 +37,7 @@ class CheckingAppSql
   function __construct()
   {
     $this->anonymous_apps_sql = new Anonymous_AppsSql();
+    $this->anonymous_apps_groups_sql = new Anonymous_AppsGroupsSql();
     $this->anonymous_devices_types_sql = new Anonymous_DevicesTypesSql();
     $this->anonymous_permissions_sql = new Anonymous_PermissionsSql();
     $this->anonymous_permissions_groups_sql = new Anonymous_PermissionsGroupsSql();
@@ -61,9 +65,10 @@ class CheckingAppSql
     $this->app_id = $this->anonymous_apps_sql->read_id_sql($app_package_name, $app_sha256);
     $device_type_id = $this->anonymous_apps_sql->read_device_type_id_sql($app_package_name);
     $device_type_name = $this->anonymous_devices_types_sql->read_name_sql($device_type_id);
-    $group_id = $this->anonymous_apps_sql->read_group_id_sql($app_package_name);
+    $group_id = $this->anonymous_apps_groups_sql->read_group_id_sql($this->app_id);
     $app_version = $this->anonymous_apps_sql->read_version_sql($app_package_name);
     // 
+    // print_r($group_id);
     // To check if run app exist in app group
     $this->permission_id = $this->anonymous_permissions_sql->read_id_sql("'$this->permission_name'");
     $permission_group_id = $this->anonymous_permissions_groups_sql->read_id_sql($this->permission_id, $group_id);

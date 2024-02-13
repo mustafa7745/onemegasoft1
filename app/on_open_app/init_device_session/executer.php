@@ -60,22 +60,22 @@ class CheckingInitDeviceSession extends CheckingLevelPermissions
         if ($c1["result"]) {
 
             $this->app_data = $c1["data"];
-if (!$this->app_data["device_session_id"]) {
-            require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/app/on_open_app/shared_checking_level_sql.php');
-            $checking_sql = new SharedCheckingLevelSql("INIT_NEW_DEVICE_SESSION");
-            // print_r($this->app_data);
-            $sql = $checking_sql->check_permission($this->app_data);
+            if (!$this->app_data["device_session_id"]) {
+                require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/app/on_open_app/shared_checking_level_sql.php');
+                $checking_sql = new SharedCheckingLevelSql("INIT_NEW_DEVICE_SESSION");
+                // print_r($this->app_data);
+                $sql = $checking_sql->check_permission($this->app_data);
 
-            $result = fun()->exec_one_sql($sql);
-            if ($result) {
-                $myArray = array();
-                while ($row = $result->fetch_assoc()) {
-                    $myArray[] = $row;
-                }
+                $result = fun()->exec_one_sql($sql);
+                if ($result) {
+                    $myArray = array();
+                    while ($row = $result->fetch_assoc()) {
+                        $myArray[] = $row;
+                    }
 
-                $this->device_session_data = $myArray[0];
-                // 
-                
+                    $this->device_session_data = $myArray[0];
+                    // 
+
                     $v1 = $this->check_all($this->device_session_data, $this->app_version, $checking_sql->permission_name);
                     $c1 = json_decode($v1, true);
                     if ($c1["result"]) {
@@ -83,9 +83,9 @@ if (!$this->app_data["device_session_id"]) {
                     }
                     return $v1;
                 }
-              return fun()->ERROR_SQL();  
+                return fun()->ERROR_SQL();
             }
-            
+
             return fun()->SUCCESS_WITH_DATA($this->app_data);
         }
         return $v1;

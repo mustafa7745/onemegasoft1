@@ -248,6 +248,12 @@ class Fun
     $en = "APP_NOT_AUTHORIAED";
     return $this->wrong->wrong_response->response(1011, $ar, $en);
   }
+  function APP_NOT_HAVE_GROUP(): string
+  {
+    $ar = "APP_NOT_HAVE_GROUP";
+    $en = "APP_NOT_HAVE_GROUP";
+    return $this->wrong->wrong_response->response(1011.1, $ar, $en);
+  }
   function APP_DISABLED(): string
   {
     $ar = "تم ايقاف التطبيق من الادارة";
@@ -751,6 +757,24 @@ class Fun
   {
     $ar = "TAG_NOT_FOUND";
     $en = "TAG_NOT_FOUND";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
+  function TAG_EMPTY_OR_NOT_FOUND(): string
+  {
+    $ar = "TAG_EMPTY_OR_NOT_FOUND";
+    $en = "TAG_EMPTY_OR_NOT_FOUND";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
+  function FROM_EMPTY_OR_NOT_FOUND(): string
+  {
+    $ar = "FROM_EMPTY_OR_NOT_FOUND";
+    $en = "FROM_EMPTY_OR_NOT_FOUND";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
+  function FROM_MUST_BE_NUMBER(): string
+  {
+    $ar = "FROM_MUST_BE_NUMBER";
+    $en = "FROM_MUST_BE_NUMBER";
     return $this->wrong->wrong_response->response(00, $ar, $en);
   }
   function ID_NOT_FOUND(): string

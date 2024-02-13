@@ -60,11 +60,14 @@ class CheckingInitDevice extends CheckingLevelPermissions
                 $sql = $checking_sql->check_permission($this->app_data);
                 $result = fun()->exec_one_sql($sql);
                 if ($result) {
+                    // echo "dd";
+                   
                     $myArray = array();
                     while ($row = $result->fetch_assoc()) {
                         $myArray[] = $row;
                     }
-                    $this->device_data = $myArray[0];
+                    $this->device_data = $myArray[0]; 
+                    // print_r($this->device_data);
                     $v1 = $this->check_all($this->device_data, $this->app_version, $checking_sql->permission_name);
                     $c1 = json_decode($v1, true);
                     if ($c1["result"]) {
@@ -90,11 +93,11 @@ class CheckingInitDevice extends CheckingLevelPermissions
         $v1 = $anonymous_devices_executer->execute_insert_sql(
             $this->device_id,
             $this->app_data["device_type_id"],
-            $this->device_info,
-            fun()
+            $this->device_info
         );
         $c1 = json_decode($v1);
         if ($c1->result) {
+            // echo "dd";
             $this->app_data["device_id"] = $this->device_id;
             $this->app_data["device_info"] = $this->device_info;
             return fun()->SUCCESS_WITH_DATA($this->app_data);

@@ -108,8 +108,7 @@ class CheckingInitDeviceSessionIp extends CheckingLevelPermissions
             
             $v1 = $anonymous_ips_executer->execute_insert_sql(
                 $ip,
-                $sql2,
-                fun()
+                $sql2
             );
             $c1 = json_decode($v1);
             if ($c1->result) {
@@ -122,8 +121,7 @@ class CheckingInitDeviceSessionIp extends CheckingLevelPermissions
             $v1 = $anonymous_devices_sessions_ips_executer->execute_insert_sql(
                 $device_session_ip_id,
                 $this->app_data["device_session_id"],
-                $ip,
-                fun()
+                $ip
             );
             $c1 = json_decode($v1);
             if ($c1->result) {

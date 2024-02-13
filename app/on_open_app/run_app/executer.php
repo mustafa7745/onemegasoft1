@@ -4,7 +4,6 @@ require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/app/on_open_app/checking
 
 class CheckingAppExecuter extends CheckingLevelPermissions
 {
-
     // 
     private $app_package_name;
     private $app_sha256;
@@ -74,7 +73,16 @@ class CheckingAppExecuter extends CheckingLevelPermissions
 
     function app()
     {
+        // echo "dd";
+        // print_r($this->app_data);
         if ($this->app_data["app_id"]) {
+            return $this->device_type();
+        }
+        return fun()->APP_NOT_AUTHORIAED();
+    }
+    function group()
+    {
+        if ($this->app_data["group_id"]) {
             return $this->device_type();
         }
         return fun()->APP_NOT_AUTHORIAED();
@@ -85,7 +93,9 @@ class CheckingAppExecuter extends CheckingLevelPermissions
         if ($this->app_data["device_type_name"] == $this->device_type_name) {
             $v1 = $this->check_all($this->app_data, $this->app_version, $this->checking_sql->permission_name);
             $c1 = json_decode($v1, true);
+            // echo "dd";
             if ($c1["result"]) {
+                // echo "dd";
                 // print_r($c1["data"]);
                 // echo "fff";
                 return fun()->SUCCESS_WITH_DATA($c1["data"]);

@@ -1,7 +1,7 @@
 <?php
 
 require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/app/on_open_app/checking_level_permissions.php');
-class OnLogin extends CheckingLevelPermissions
+class Login extends CheckingLevelPermissions
 {
     private $app_package_name;
     private $app_sha256;

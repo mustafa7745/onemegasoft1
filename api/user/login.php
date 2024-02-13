@@ -20,7 +20,7 @@ class ThisClass
     // echo "dd";
     $this->shared_post_level->init_shared_post_level2();
     // echo "dd";
-    $this->controller = new OnLogin(
+    $this->controller = new Login(
       $this->shared_post_level->app_package_name,
       $this->shared_post_level->sha,
       $this->shared_post_level->app_version,

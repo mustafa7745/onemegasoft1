@@ -5,25 +5,55 @@ require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/functions/filter_posted_data.ph
 
 class Shared_Data
 {
-    public $data;
+    public $data1;
+    public $data2;
+    public $data3;
+
+
     public $filter_posted_data;
-
-    // function __construct()
-    // {
-
-    // }
-
 
     function data1()
     {
-        if (!isset($_POST["data1"])) {
+        $name = "data1";
+        if (!isset($_POST[$name])) {
             $this->exitFromScript(fun()->POST_DATA_NOT_FOUND(1));
         }
-        if (!fun()->json_validate($_POST["data1"])) {
+        if (!fun()->json_validate($_POST[$name])) {
             $this->exitFromScript(fun()->JSON_FORMAT_INVALID("DATA1"));
         }
-        $this->data = json_decode($_POST["data1"], true);
-        $this->filter_posted_data = new FilterPostedData($this->data);
+        $this->data1 = json_decode($_POST[$name], true);
+        $this->filter_posted_data = new FilterPostedData();
+        $this->filter_posted_data->data1($this->data1);
+    }
+    function data2()
+    {
+        $this->data1();
+        // 
+        $name = "data2";
+        if (!isset($_POST[$name])) {
+            $this->exitFromScript(fun()->POST_DATA_NOT_FOUND(2));
+        }
+        if (!fun()->json_validate($_POST[$name])) {
+            $this->exitFromScript(fun()->JSON_FORMAT_INVALID("DATA2"));
+        }
+        $this->data2 = json_decode($_POST[$name], true);
+        $this->filter_posted_data = new FilterPostedData();
+        $this->filter_posted_data->data2($this->data1, $this->data2);
+    }
+    function data3()
+    {
+        $this->data2();
+        // 
+        $name = "data3";
+        if (!isset($_POST[$name])) {
+            $this->exitFromScript(fun()->POST_DATA_NOT_FOUND(3));
+        }
+        if (!fun()->json_validate($_POST[$name])) {
+            $this->exitFromScript(fun()->JSON_FORMAT_INVALID("DATA3"));
+        }
+        $this->data3 = json_decode($_POST[$name], true);
+        $this->filter_posted_data = new FilterPostedData();
+        $this->filter_posted_data->data3($this->data1, $this->data2, $this->data3);
     }
     function getAppPackageName()
     {
@@ -32,7 +62,6 @@ class Shared_Data
     }
     function getSha()
     {
-
         $v1 = $this->filter_posted_data->checkAppSha();
         return $this->returnData($v1);
     }
@@ -56,6 +85,33 @@ class Shared_Data
         $v1 = $this->filter_posted_data->checkDeviceInfo();
         return $this->returnData($v1);
     }
+    function getDeviceAppToken()
+    {
+        $v1 = $this->filter_posted_data->checkDeviceAppToken();
+        return $this->returnData($v1);
+    }
+    function getUserPhone()
+    {
+        $v1 = $this->filter_posted_data->checkUserPhone();
+        return $this->returnData($v1);
+    }
+    function getUserPassword()
+    {
+        $v1 = $this->filter_posted_data->checkUserPassword();
+        return $this->returnData($v1);
+    }
+    // 
+    function getTag()
+    {
+        $v1 = $this->filter_posted_data->checkTag();
+        return $this->returnData($v1);
+    }
+    function getFrom()
+    {
+        $v1 = $this->filter_posted_data->checkFrom();
+        return $this->returnData($v1);
+    }
+    
     function returnData($v1)
     {
         $c1 = json_decode($v1, TRUE);
@@ -70,24 +126,5 @@ class Shared_Data
         exit();
     }
 
-    // function init_shared_post_level2() {
-    //     array_push($GLOBALS['va'],"user_phone","user_password","data");
-    //     checkPostValidate();
-    //     $this->app_package_name = $_POST['app_package_name'];
-    //     $this->sha = strtoupper($_POST['sha']);
-    //     $this->app_version = $_POST['app_version'] ;
-    //     $this->device_id = $_POST['device_id'];
-    //     $this->device_type_name = $_POST['device_type_name'];
-    //     $this->app_device_token = ($_POST['app_device_token']);
-    //     $this->device_info = $_POST['device_info'];
-    //     $this->user_phone = ($_POST['user_phone']);
-    //     $this->user_password = $_POST['user_password'];
-    //     $this->data = $_POST["data"];
-    //     // 
-    //     if (!fun()->json_validate($this->data)) {
-    //         echo fun()->JSON_FORMAT_INVALID();
-    //         exit();
-    //     }
-    // }
 
 }

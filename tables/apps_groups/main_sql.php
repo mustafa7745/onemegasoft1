@@ -12,6 +12,13 @@ class MainSqlAppsGroups extends AppsGroupsAttribute
         return read_by_condition_sql($table_name, $column, $innerJoin, $condition);
         
     } 
+    function r_group_id_sql($innerJoin, $condition): string
+    {
+        $table_name = $this->table_name;
+        $column = "{$this->table_name}.{$this->group_id}";
+        /////
+        return read_by_condition_sql($table_name, $column, $innerJoin, $condition);
+    }
   
    
 }
