@@ -58,6 +58,7 @@ class CheckingInitDevice extends CheckingLevelPermissions
                 require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/app/on_open_app/shared_checking_level_sql.php');
                 $checking_sql = new SharedCheckingLevelSql("INIT_NEW_DEVICE");
                 $sql = $checking_sql->check_permission($this->app_data);
+                // print_r($sql);
                 $result = fun()->exec_one_sql($sql);
                 if ($result) {
                     // echo "dd";

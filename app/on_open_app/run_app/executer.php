@@ -24,9 +24,6 @@ class CheckingAppExecuter extends CheckingLevelPermissions
         $this->user_password = $user_password;
     }
 
-
-
-
     public function __construct(
         $app_package_name,
         $app_sha256,
@@ -53,12 +50,9 @@ class CheckingAppExecuter extends CheckingLevelPermissions
         if (isset($this->user_phone) and isset($this->user_password)) {
             $sql = $sql . $this->checking_sql->check_user($this->user_phone, $this->user_password);
         }
-        // echo $sql;
-        // echo "ff";
-        $result = fun()->exec_one_sql($sql);
-         
+        $fun = fun();
+        $result = $fun->exec_one_sql($sql);
         if ($result) {
-            // echo "ff";
             $myArray = array();
             while ($row = $result->fetch_assoc()) {
                 $myArray[] = $row;
@@ -67,8 +61,7 @@ class CheckingAppExecuter extends CheckingLevelPermissions
             $this->app_data = $data[0];
             return $this->app();
         }
-        // echo "fff";
-        return fun()->ERROR_SQL();
+        return $fun->ERROR_SQL_NAME();
     }
 
     function app()

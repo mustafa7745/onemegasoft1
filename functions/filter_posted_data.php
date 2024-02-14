@@ -51,9 +51,9 @@ class FilterPostedData
         }
         $value = $this->data1[$name];
         // echo ;
-        if (strlen($value) != 95) {
-            return fun()->APP_SHA_MUST_BE_FORMATTED();
-        }
+        // if (strlen($value) != 95) {
+        //     return fun()->APP_SHA_MUST_BE_FORMATTED();
+        // }
         $array = array('\'', '"', "'", ',', ';', '<', '>', '/', '*', '#', "=");
         for ($i = 0; $i < count($array); $i++) {
             if (str_contains($value, $array[$i])) {
@@ -97,6 +97,7 @@ class FilterPostedData
                 return fun()->DEVICE_ID_MUST_BE_FORMATTED();
             }
         }
+        // return fun()->DEVICE_ID_MUST_BE_FORMATTED();
         return fun()->SUCCESS_WITH_DATA($value);
     }
     // 

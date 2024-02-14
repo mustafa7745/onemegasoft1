@@ -65,6 +65,7 @@ class CheckingInitDeviceSession extends CheckingLevelPermissions
                 $checking_sql = new SharedCheckingLevelSql("INIT_NEW_DEVICE_SESSION");
                 // print_r($this->app_data);
                 $sql = $checking_sql->check_permission($this->app_data);
+                // print_r($sql);
 
                 $result = fun()->exec_one_sql($sql);
                 if ($result) {

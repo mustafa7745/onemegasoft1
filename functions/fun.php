@@ -183,7 +183,10 @@ class Fun
   {
     try {
       // print_r("ddd");
-      return $this->db->conn->query($sql);
+      $v = $this->db->conn->query($sql);
+      // print_r($v);
+      return $v;
+      
     } catch (Exception $e) {
       // print_r("fadfs");
       return $this->EXP_SQL();
@@ -201,6 +204,12 @@ class Fun
   {
     $ar = "خطأ في الاوامر";
     $en = "ERROR_SQL";
+    return $this->wrong->wrong_response->response(1002, $ar, $en);
+  }
+  function ERROR_SQL_NAME(): string
+  {
+    $ar = "خطأ في الاوامر";
+    $en = mysqli_error($this->db->conn);
     return $this->wrong->wrong_response->response(1002, $ar, $en);
   }
   function UNKOWN_ERROR(): string

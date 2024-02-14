@@ -1,44 +1,35 @@
 <?php
 $root = "onemegasoft1";
 require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/app/on_open_app/init_device_session_ip/executer.php");
-require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/api/shared/shared_post_level.php");
+require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/api/shared/shared_data.php");
 /////////////////
 
 class ThisClass
 {
-  // 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
   public $controller;
-  public $shared_post_level;
+  public $shared_data;
 
   function __construct()
   {
-    // print_r($_POST);
-    $this->shared_post_level = new SharedPostLevel();
-    checkPosts1($GLOBALS['va']);
-  }
-  function init()
-  {
-    $this->shared_post_level->init_shared_post_level1();
+    $this->shared_data = new Shared_Data();
+    $this->shared_data->data1();
+    //  
     $this->controller = new CheckingInitDeviceSessionIp(
-      $this->shared_post_level->app_package_name,
-      $this->shared_post_level->sha,
-      $this->shared_post_level->app_version,
-      $this->shared_post_level->device_type_name,
-      $this->shared_post_level->device_id,
-      $this->shared_post_level->device_info,
-      $this->shared_post_level->app_device_token
+      $this->shared_data->getAppPackageName(),
+      $this->shared_data->getSha(),
+      $this->shared_data->getAppVersion(),
+      $this->shared_data->getDeviceTypeName(),
+      $this->shared_data->getDeviceId(),
+      $this->shared_data->getDeviceInfo(),
+      $this->shared_data->getDeviceAppToken()
     );
-    // $this->controller->initUserAttr( $user_phone, $user_password);
-
-
   }
-
+  
+ 
   function main(): string
   {
-    $this->init();
     // sleep(2);
-    // echo "dd";
-    $v1 = $this->controller->check();
+    $v1 = $this->controller->check(); 
     $c1 = json_decode($v1);
     if ($c1->result) {
       return $v1;
