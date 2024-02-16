@@ -11,6 +11,7 @@ class ThisClass
 
   function __construct()
   {
+    // 
     $this->shared_data = new Shared_Data();
     $this->shared_data->data1();
     //  

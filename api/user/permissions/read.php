@@ -35,6 +35,7 @@ class ThisClass
   {
     $v1 = '';
     if ($this->shared_data->getTag() == "read") {
+      sleep(10);
       $v1 = $this->controller->read_permissions($this->shared_data->getFrom());
     } elseif ($this->shared_data->getTag() == "SEARCH") {
       // print_r(isset($data["SEARCH_BY"]) );

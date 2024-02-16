@@ -86,12 +86,14 @@ class Permissions extends CheckingLevelPermissions
                         }
                         return fun()->USER_SESSION_NOT_FOUND_PLEASE_LOGIN_AGAIN();
                     }
-                    return fun()->USER_OR_PASSWORD_ERROR();
+                    return fun()->USER_PASSWORD_CHANGED();
                 }
                 return $v1;
             }
             return fun()->ERROR_SQL();
         }
+       
+        
         return $v1;
     }
 
@@ -146,14 +148,14 @@ class Permissions extends CheckingLevelPermissions
     }
     function edit_permission($name,$id)
     {
-        // $v1 = $this->check("UPDATE_PERMISSION_NAME");
-        // $c1 = json_decode($v1, true);
-        // if ($c1["result"]) {
+        $v1 = $this->check("UPDATE_PERMISSION_NAME");
+        $c1 = json_decode($v1, true);
+        if ($c1["result"]) {
            require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/permissions/user/executer.php');
         $user_permissions_executer = new User_PermissionsExecuter();
         return $user_permissions_executer->execute_update_name_sql($name,$id); 
-        // }
-        // return $v1;
+        }
+        return $v1;
        
     }
 

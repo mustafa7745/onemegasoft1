@@ -8,6 +8,10 @@ class Success{
       $this->success_response = new SuccessResponse();
       
     }
+    function SUCCESS_NO_DATA_CODE($code):String{
+      http_response_code($code);
+        return $this->success_response->response(NULL);
+    }
     function SUCCESS_NO_DATA():String{
         return $this->success_response->response(NULL);
     }

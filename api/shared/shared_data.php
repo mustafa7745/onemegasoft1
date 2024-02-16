@@ -106,12 +106,46 @@ class Shared_Data
         $v1 = $this->filter_posted_data->checkTag();
         return $this->returnData($v1);
     }
+    function getTagUpdate()
+    {
+        if ($this->getTag() != "update") {
+            $this->exitFromScript(fun()->UNKOWN_TAG());
+        }
+    }
+    function getTagRead()
+    {
+        if ($this->getTag() != "read") {
+            $this->exitFromScript(fun()->UNKOWN_TAG());
+        }
+    }
+    function getTagDelete()
+    {
+        if ($this->getTag() != "update") {
+            $this->exitFromScript(fun()->UNKOWN_TAG());
+        }
+    }
     function getFrom()
     {
         $v1 = $this->filter_posted_data->checkFrom();
         return $this->returnData($v1);
     }
-    
+    function getName()
+    {
+        $v1 = $this->filter_posted_data->checkName();
+        return $this->returnData($v1);
+    }
+
+
+    function getIds()
+    {
+        $v1 = $this->filter_posted_data->checkIds();
+        return $this->returnData($v1);
+    }
+    function getId()
+    {
+        $v1 = $this->filter_posted_data->checkId();
+        return $this->returnData($v1);
+    }
     function returnData($v1)
     {
         $c1 = json_decode($v1, TRUE);

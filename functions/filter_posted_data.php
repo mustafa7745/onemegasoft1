@@ -9,12 +9,12 @@ class FilterPostedData
     {
         $this->data1 = $data1;
     }
-    function data2($data1,$data2)
+    function data2($data1, $data2)
     {
         $this->data1 = $data1;
         $this->data2 = $data2;
     }
-    function data3($data1,$data2,$data3)
+    function data3($data1, $data2, $data3)
     {
         $this->data1 = $data1;
         $this->data2 = $data2;
@@ -88,7 +88,7 @@ class FilterPostedData
         }
         $value = $this->data1[$name];
         // echo strlen($value);
-        if (strlen($value) > 30) {
+        if (strlen($value) > 50) {
             return fun()->DEVICE_ID_MUST_BE_FORMATTED();
         }
         $array = array('\'', "'", '"', ',', ';', '<', '>', '/', '*', '#', "=");
@@ -136,7 +136,8 @@ class FilterPostedData
         $array = array('\'', "'", ',', ';', '<', '>', '/', '*', '#', "=");
         for ($i = 0; $i < count($array); $i++) {
             if (str_contains($value, $array[$i])) {
-                return fun()->DEVICE_INFO_MUST_BE_FORMATTED();;
+                return fun()->DEVICE_INFO_MUST_BE_FORMATTED();
+                ;
             }
         }
         // print_r($value);
@@ -237,6 +238,47 @@ class FilterPostedData
         return fun()->SUCCESS_WITH_DATA($value);
     }
     // 
+    function checkName(): string
+    {
+        $name = "name";
+        if (!isset($this->data3[$name])) {
+            return fun()->FROM_EMPTY_OR_NOT_FOUND();
+        }
+        $value = $this->data3[$name];
+        
+        // $value = addslashes($value);
+
+       
+        return fun()->SUCCESS_WITH_DATA($value);
+    }
+    // 
+    function checkIds()
+    {
+        $name = "ids";
+        if (!isset($this->data3[$name])) {
+            return fun()->IDS_EMPTY_OR_NOT_FOUND();
+        }
+        $value = $this->data3[$name];
+        $v1 = fun()->CONVERT_IDS_TO_LIST(json_encode($value));
+        $c1 = json_decode($v1, true);
+        // print_r($c1 );
+        if (!$c1["result"]) {
+            return $v1;
+        }
+        return fun()->SUCCESS_WITH_DATA($c1["data"]);
+    }
+    // 
+    function checkId()
+    {
+        $name = "id";
+        if (!isset($this->data3[$name])) {
+            return fun()->ID_EMPTY_OR_NOT_FOUND();
+        }
+        $value = $this->data3[$name];
+
+        return fun()->SUCCESS_WITH_DATA($value);
+    }
+    // 
     function filterAppPackageName(Fun $fun): string
     {
         $name = "app_package_name";
@@ -330,7 +372,8 @@ class FilterPostedData
         $array = array('\'', "'", ',', ';', '<', '>', '/', '*', '#', "=");
         for ($i = 0; $i < count($array); $i++) {
             if (str_contains($value, $array[$i])) {
-                return $fun->DEVICE_INFO_MUST_BE_FORMATTED();;
+                return $fun->DEVICE_INFO_MUST_BE_FORMATTED();
+                ;
             }
         }
 

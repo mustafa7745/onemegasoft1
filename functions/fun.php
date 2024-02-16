@@ -780,6 +780,37 @@ class Fun
     $en = "FROM_EMPTY_OR_NOT_FOUND";
     return $this->wrong->wrong_response->response(00, $ar, $en);
   }
+  function NAME_NOT_FORMATTED(): string
+  {
+    $ar = "NAME_NOT_FORMATTED";
+    $en = "NAME_NOT_FORMATTED";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
+  function INSERTED_BUT_CANNOT_READ(): string
+  {
+    $ar = "INSERTED_BUT_CANNOT_READ";
+    $en = "INSERTED_BUT_CANNOT_READ";
+    return $this->success->SUCCESS_NO_DATA_CODE(201);
+  }
+  
+  function IDS_EMPTY_OR_NOT_FOUND(): string
+  {
+    $ar = "IDS_EMPTY_OR_NOT_FOUND";
+    $en = "IDS_EMPTY_OR_NOT_FOUND";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
+  function ID_EMPTY_OR_NOT_FOUND(): string
+  {
+    $ar = "ID_EMPTY_OR_NOT_FOUND";
+    $en = "ID_EMPTY_OR_NOT_FOUND";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
+  function NAME_EMPTY_OR_NOT_FOUND(): string
+  {
+    $ar = "NAME_EMPTY_OR_NOT_FOUND";
+    $en = "NAME_EMPTY_OR_NOT_FOUND";
+    return $this->wrong->wrong_response->response(00, $ar, $en);
+  }
   function FROM_MUST_BE_NUMBER(): string
   {
     $ar = "FROM_MUST_BE_NUMBER";

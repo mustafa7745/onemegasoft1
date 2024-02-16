@@ -11,6 +11,14 @@ class User_PermissionsSql extends MainSqlPermissions
         /////
         return $this->r_sql($innerJoin, $condition, $offset);
     }
+    function read_one_by_id_sql($permission_id): string
+    {
+        // return "(SELECT $this->device_app_session_id FROM $this->table_name WHERE $this->device_id = $device_id and $this->app_id = $app_id)";
+        $innerJoin = "";
+        $condition = "$this->permission_id = $permission_id";
+        /////
+        return $this->r_sql($innerJoin, $condition, "0");
+    }
     function read_in_sql($in_data): string
     {
         // return "(SELECT $this->device_app_session_id FROM $this->table_name WHERE $this->device_id = $device_id and $this->app_id = $app_id)";
