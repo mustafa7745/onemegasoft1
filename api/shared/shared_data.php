@@ -9,21 +9,26 @@ class Shared_Data
     public $data2;
     public $data3;
 
-
     public $filter_posted_data;
 
     function data1()
     {
         $name = "data1";
         if (!isset($_POST[$name])) {
-            $this->exitFromScript(fun()->POST_DATA_NOT_FOUND(1));
+            $this->exitFromScript(fun1()->POST_DATA_NOT_FOUND(1));
         }
         if (!fun()->json_validate($_POST[$name])) {
-            $this->exitFromScript(fun()->JSON_FORMAT_INVALID("DATA1"));
+            $this->exitFromScript(fun1()->JSON_FORMAT_INVALID("DATA1"));
         }
         $this->data1 = json_decode($_POST[$name], true);
         $this->filter_posted_data = new FilterPostedData();
         $this->filter_posted_data->data1($this->data1);
+    }
+    function checkPostData1()
+    {
+        if (count($_POST) > 1) {
+            $this->exitFromScript(fun1()->MORE_THAN_POST_DATA());
+        }
     }
     function data2()
     {
@@ -54,6 +59,14 @@ class Shared_Data
         $this->data3 = json_decode($_POST[$name], true);
         $this->filter_posted_data = new FilterPostedData();
         $this->filter_posted_data->data3($this->data1, $this->data2, $this->data3);
+    }
+    function issetData2()
+    {
+        $name = "data2";
+        if (!isset($_POST[$name])) {
+            return false;
+        }
+        return true;
     }
     function getAppPackageName()
     {
@@ -146,17 +159,16 @@ class Shared_Data
         $v1 = $this->filter_posted_data->checkId();
         return $this->returnData($v1);
     }
-    function returnData($v1)
+    function returnData(ResultData $v1)
     {
-        $c1 = json_decode($v1, TRUE);
-        if (!$c1["result"]) {
-            $this->exitFromScript($v1);
+        if (!$v1->result) {
+            $this->exitFromScript($v1->data);
         }
-        return $c1["data"];
+        return $v1->data;
     }
     private function exitFromScript($v1)
     {
-        echo $v1;
+        echo json_encode($v1->data);
         exit();
     }
 

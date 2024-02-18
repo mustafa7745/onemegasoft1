@@ -3,12 +3,10 @@ require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/ips/anonymous/sql
 class Anonymous_IpsExecuter extends Anonymous_IpsSql
 {
 
-  function execute_insert_sql($ip,$sql2): string
+  function execute_insert_sql($ip): ResultData
   {
     $sql1 = $this->insert_sql("'$ip'");
-    $sql_array = array($sql1,$sql2);
-
-    return shared_execute_more_sql($sql_array);
+    return shared_execute_insert_server_sql($sql1);
   }
   
 }

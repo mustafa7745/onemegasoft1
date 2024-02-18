@@ -25,7 +25,7 @@ class Anonymous_VerificationCodesExecuter extends Anonymous_VerificationCodesSql
   function execute_update_verification_code_sql($verification_code_data, $verification_code_id): string
   {
     $sql = $this->update_verification_code_sql("'$verification_code_data'", "'$verification_code_id'");
-    print_r($sql);
+    // print_r($sql);
     return shared_execute_update_sql($sql);
   }
   function execute_update_updated_at_sql($verification_code_id): string

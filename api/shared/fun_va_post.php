@@ -1,6 +1,8 @@
 <?php
 $root = "onemegasoft1";
 require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/functions/fun.php");
+require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/functions/fun1.php");
+
 $va = array(
     "app_package_name",
     "sha",
@@ -14,6 +16,10 @@ $va = array(
 function fun(): Fun
 {
     return new Fun();
+}
+function fun1(): Fun1
+{
+    return new Fun1();
 }
 
 function checkPosts1($va)

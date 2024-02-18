@@ -2,6 +2,10 @@
 $root = "onemegasoft1";
 require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/app/on_open_app/init_device_session_ip/executer.php");
 require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/api/shared/shared_data.php");
+require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/app/on_open_app/init_device_session/executer.php');
+
+
+
 /////////////////
 
 class ThisClass
@@ -11,31 +15,28 @@ class ThisClass
 
   function __construct()
   {
+    // $v = (new WrongResponse())->error_response("ar","en",300);
+    // print_r(json_encode($v->data));
     // 
     $this->shared_data = new Shared_Data();
     $this->shared_data->data1();
+    $this->shared_data->checkPostData1();
     //  
-    $this->controller = new CheckingInitDeviceSessionIp(
-      $this->shared_data->getAppPackageName(),
-      $this->shared_data->getSha(),
-      $this->shared_data->getAppVersion(),
-      $this->shared_data->getDeviceTypeName(),
-      $this->shared_data->getDeviceId(),
-      $this->shared_data->getDeviceInfo(),
-      $this->shared_data->getDeviceAppToken()
-    );
+    // print_r($this->shared_data->getAppPackageName());
+    // $this->controller = new CheckingInitDeviceSessionIp($this->shared_data);
+    $this->controller = new CheckingInitDeviceSessionIp($this->shared_data);
+
   }
   
  
   function main(): string
   {
-    // sleep(2);
-    $v1 = $this->controller->check(); 
-    $c1 = json_decode($v1);
-    if ($c1->result) {
-      return $v1;
+    // sleep(1);
+    $resultData = $this->controller->check();
+    if ($resultData->result) {
+      return json_encode($resultData->data);
     }
-    return $v1;
+    return json_encode($resultData->data) ; 
   }
 }
 

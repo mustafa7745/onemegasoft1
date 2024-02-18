@@ -3,172 +3,152 @@
 class CheckingLevelPermissions
 {
     private $permission_name;
+    private $app_version;
 
-    function check_all($data, $app_version, $permission_name)
+    function check_all(ResultData $data, $app_version, $permission_name): ResultData
     {
         $this->permission_name = $permission_name;
-        if (isset($data["user_id"]) and $data["user_id"] != null) {
-            $v1 = $this->check_user($data, $app_version, $this->permission_name);
-            $c1 = json_decode($v1, true);
-            if ($c1["result"]) {
-                // array_splice($this->app_data, 21);
-                return fun()->SUCCESS_WITH_DATA($data);
-            }
-            return $v1;
-        }
+        $this->app_version = $app_version;
+        if ($data->issetUserId() and $data->getUserId() != null) {
+            return $this->check_user($data, $this->permission_name);
 
-
-        $v1 = $this->check_anonymous($data, $app_version, $permission_name);
-        $c1 = json_decode($v1, true);
-        if ($c1["result"]) {
-            array_splice($data, 21);
-            return fun()->SUCCESS_WITH_DATA($data);
         }
-        return $v1;
+        return $this->check_anonymous($data, $permission_name);
     }
 
-    function check_anonymous($data, $app_version, $permission_name)
+    private function check_anonymous(ResultData $data, $permission_name)
     {
-        // print_r($data["permission_group_id"]);
-        // print_r($permission_name);
-        $this->permission_name = $permission_name;
-        $v1 = $this->check_permission($data, $app_version);
-        $c1 = json_decode($v1, true);
-        if ($c1["result"]) {
-            return fun()->SUCCESS_WITH_DATA($data);
-        }
-        return $v1;
+        return $this->check_permission($data);
     }
-    function check_user($data, $app_version, $permission_name)
+    private function check_user(ResultData $data, $permission_name)
     {
-        // print_r($permission_name);
-        $this->permission_name = $permission_name;
-        $v1 = $this->check_permission($data, $app_version);
-        $c1 = json_decode($v1, true);
-        if ($c1["result"]) {
-            $v1 = $this->check_users_level($data);
-            $c1 = json_decode($v1, true);
-            if ($c1["result"]) {
-                return fun()->SUCCESS_WITH_DATA($data);
-            }
-            return $v1;
+        $resultData = $this->check_permission($data);
+        if ($resultData->result) {
+            return $this->check_users_level($data);
         }
-        return $v1;
+        return $resultData;
+
     }
 
-    private function check_permission($data, $app_version)
+    private function check_permission(ResultData $data): ResultData
     {
-        if ($data["group_id"] != null) {
-            if ($data["permission_group_id"] != null) {
-                if (!$data["permission_ium"]) {
-                    if (!$data["permission_iru"]) {
+        if ($data->getGroupId() != null) {
+            if ($data->getPermissionGroupId() != null) {
+                if (!$data->getPermissionIUM()) {
+                    if (!$data->getPermissionIRU()) {
                         return $this->check_apps_level($data);
                     }
                     // print_r($data["app_version"]);
-                    if ($data["app_version"] <= $app_version) {
+                    if ($data->getAppVersion() <= $this->app_version) {
                         return $this->check_apps_level($data);
                     }
-                    return fun()->PERMISSION_REQUIRED_UPDATE($this->permission_name);
+                    return fun1()->PERMISSION_REQUIRED_UPDATE($this->permission_name);
                 }
-                return fun()->PERMISSION_UNDER_MAINTANANCE($this->permission_name);
+                return fun1()->PERMISSION_UNDER_MAINTANANCE($this->permission_name);
             }
-            return fun()->NOT_FOUND_IN_THIS_GROUP_PERMISSIONS($this->permission_name);
+            return fun1()->NOT_FOUND_IN_THIS_GROUP_PERMISSIONS($this->permission_name);
         }
-        return fun()->APP_NOT_HAVE_GROUP();
+        return fun1()->APP_NOT_HAVE_GROUP();
 
     }
 
-    private function check_apps_level($data)
+    private function check_apps_level(ResultData $data): ResultData
     {
-        if ($data["permission_is_have_blocked_all_l_apps"] != null) {
-            if ($data["permission_is_have_a_blocked_a_l_apps"] != null) {
+        $place = "APP";
+
+        if ($data->getPermissionIsHaveBlockedAllLevelApps() != null) {
+            if ($data->getPermissionIsHaveAllowBlockAllLevelApps() != null) {
                 return $this->check_ips_level($data);
             }
-            if ($data["permission_is_have_allow_l_apps"] != null) {
+            if ($data->getPermissionIsHaveAllowLevelApps() != null) {
                 return $this->check_ips_level($data);
             }
-            return fun()->PERMISSION_IS_BLOCKED_FROM_USE_IN_THIS_APP($this->permission_name);
+            return fun1()->PERMISSION_IS_BLOCKED_FROM_USE_IN($this->permission_name, $place);
         }
         //
-        if ($data["permission_is_have_blocked_l_apps"] != null) {
-            return fun()->PERMISSION_IS_BLOCKED_FROM_USE_IN_THIS_APP($this->permission_name);
+        if ($data->getPermissionIsHaveBlockedLevelApps() != null) {
+            return fun1()->PERMISSION_IS_BLOCKED_FROM_USE_IN($this->permission_name, $place);
         }
         return $this->check_ips_level($data);
     }
 
-    private function check_ips_level($data)
+    private function check_ips_level(ResultData $data): ResultData
     {
-        if ($data["permission_is_have_blocked_all_l_ips"] != null) {
+        $place = "IP";
+        if ($data->getPermissionIsHaveBlockedAllLevelIps() != null) {
             // print_r("ff");
-            if ($data["permission_is_have_a_blocked_a_l_ips"] != null) {
+            if ($data->getPermissionIsHaveAllowBlockAllLevelIps() != null) {
                 return $this->check_devices_level($data);
             }
-            if ($data["permission_is_have_allow_l_ips"] != null) {
+            if ($data->getPermissionIsHaveAllowLevelIps() != null) {
                 return $this->check_devices_level($data);
             }
-            return fun()->PERMISSION_IS_BLOCKED_FROM_USE_IN_THIS_IP($this->permission_name);
+            return fun1()->PERMISSION_IS_BLOCKED_FROM_USE_IN($this->permission_name, $place);
         }
-        if ($data["permission_is_have_blocked_l_ips"] != null) {
-            return fun()->PERMISSION_IS_BLOCKED_FROM_USE_IN_THIS_IP($this->permission_name);
+        if ($data->getPermissionIsHaveBlockedLevelIps() != null) {
+            return fun1()->PERMISSION_IS_BLOCKED_FROM_USE_IN($this->permission_name, $place);
         }
         return $this->check_devices_level($data);
     }
 
-    private function check_devices_level($data)
+    private function check_devices_level(ResultData $data): ResultData
     {
-        if ($data["permission_is_have_blocked_all_l_devices"] != null) {
+        $place = "DEVICE";
+        if ($data->getPermissionIsHaveBlockedAllLevelDevices() != null) {
             //    print_r("ff");
-            if ($data["permission_is_have_a_blocked_a_l_devices"] != null) {
+            if ($data->getPermissionIsHaveAllowBlockAllLevelDevices() != null) {
                 return $this->check_devices_sessions_level($data);
             }
-            if ($data["permission_is_have_allow_l_devices"] != null) {
+            if ($data->getPermissionIsHaveAllowLevelDevices() != null) {
                 return $this->check_devices_sessions_level($data);
             }
-            return fun()->PERMISSION_IS_BLOCKED_FROM_USE_IN_THIS_DEVICE($this->permission_name);
+            return fun1()->PERMISSION_IS_BLOCKED_FROM_USE_IN($this->permission_name, $place);
         }
-        if ($data["permission_is_have_blocked_l_devices"] != null) {
+        if ($data->getPermissionIsHaveBlockedLevelDevices() != null) {
             // print_r("ff");
-            return fun()->PERMISSION_IS_BLOCKED_FROM_USE_IN_THIS_DEVICE($this->permission_name);
+            return fun1()->PERMISSION_IS_BLOCKED_FROM_USE_IN($this->permission_name, $place);
         }
         return $this->check_devices_sessions_level($data);
     }
-    private function check_devices_sessions_level($data)
+    private function check_devices_sessions_level(ResultData $data): ResultData
     {
+        $place = "DEVICE_SESSION";
         // print_r("df");
-        if ($data["permission_is_have_blocked_all_l_devices_sessions"] != null) {
+        if ($data->getPermissionIsHaveBlockedAllLevelDevicesSession() != null) {
             //    print_r("ff");
-            if ($data["permission_is_have_a_blocked_a_l_devices_sessions"] != null) {
-                return fun()->SUCCESS_WITH_DATA($data);
+            if ($data->getPermissionIsHaveAllowBlockAllLevelDevicesSessions() != null) {
+                return $data;
             }
-            if ($data["permission_is_have_allow_l_devices_sessions"] != null) {
-                return fun()->SUCCESS_WITH_DATA($data);
+            if ($data->getPermissionIsHaveAllowLevelDevicesSessions() != null) {
+                return $data;
             }
-            return fun()->PERMISSION_IS_BLOCKED_FROM_USE_IN_THIS_DEVICE($this->permission_name);
+            return fun1()->PERMISSION_IS_BLOCKED_FROM_USE_IN($this->permission_name, $place);
         }
-        if ($data["permission_is_have_blocked_l_devices_sessions"] != null) {
+        if ($data->getPermissionIsHaveBlockedLevelDevicesSessions() != null) {
             // print_r("ff");
-            return fun()->PERMISSION_IS_BLOCKED_FROM_USE_IN_THIS_DEVICE($this->permission_name);
+            return fun1()->PERMISSION_IS_BLOCKED_FROM_USE_IN($this->permission_name, $place);
         }
-        return fun()->SUCCESS_WITH_DATA($data);
+        return $data;
     }
 
-    private function check_users_level($data)
+    private function check_users_level(ResultData $data): ResultData
     {
+        $place = "USER";
         // print_r("df");
-        if ($data["permission_is_have_blocked_all_l_users"] != null) {
+        if ($data->getPermissionIsHaveBlockedAllLevelUsers() != null) {
             //    print_r("ff");
-            if ($data["permission_is_have_a_blocked_a_l_users"] != null) {
-                return fun()->SUCCESS_WITH_DATA($data);
+            if ($data->getPermissionIsHaveAllowBlockAllLevelUsers() != null) {
+                return fun1()->SUCCESS_WITH_DATA($data);
             }
-            if ($data["permission_is_have_allow_l_users"] != null) {
-                return fun()->SUCCESS_WITH_DATA($data);
+            if ($data->getPermissionIsHaveAllowLevelUsers() != null) {
+                return fun1()->SUCCESS_WITH_DATA($data);
             }
-            return fun()->PERMISSION_IS_BLOCKED_FROM_USE_IN_THIS_USER($this->permission_name);
+            return fun1()->PERMISSION_IS_BLOCKED_FROM_USE_IN($this->permission_name, $place);
         }
-        if ($data["permission_is_have_blocked_l_users"] != null) {
+        if ($data->getPermissionIsHaveBlockedLevelUsers() != null) {
             // print_r("ff");
-            return fun()->PERMISSION_IS_BLOCKED_FROM_USE_IN_THIS_USER($this->permission_name);
+            return fun1()->PERMISSION_IS_BLOCKED_FROM_USE_IN($this->permission_name, $place);
         }
-        return fun()->SUCCESS_WITH_DATA($data);
+        return fun1()->SUCCESS_WITH_DATA($data);
     }
 }

@@ -38,7 +38,7 @@ class Whatsapp_UsersExecuter extends Whatsapp_UsersSql
     $user_code = (new Whatsapp_UserCodesSql())->read_user_code_sql("'$user_id'", "'$app_id'", $mycode_id);
     $sql2 = (new Whatsapp_UserUpdateOperationsSql())->insert_sql($user_code, "'$device_app_session_id'", "'$user_update_operation_pre_value'", "'$user_update_operation_post_value'");
     $sql_array = array($sql1,$sql2, $sql3);
-    print_r($sql_array);
+    // print_r($sql_array);
     return shared_execute_more_sql($sql_array);
   }
   function execute_read_id_sql($verification_code): string

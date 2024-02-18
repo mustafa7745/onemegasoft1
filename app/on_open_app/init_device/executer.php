@@ -3,106 +3,57 @@
 require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/app/on_open_app/checking_level_permissions.php');
 class CheckingInitDevice extends CheckingLevelPermissions
 {
-    private $app_package_name;
-    private $app_sha256;
-    private $app_version;
-    private $device_type_name;
-    private $device_id;
-    private $device_info;
-    // 
-    private $app_data;
-    // 
-    private $device_data;
-    // 
-    private $check_app;
-    //   
-    function initUserAttr($user_phone, $user_password)
+    private $shared_data;
+    public function __construct(Shared_Data $shared_data)
     {
-        $this->check_app->initUserAttr($user_phone, $user_password);
+        $this->shared_data = $shared_data;
     }
-
-    public function __construct(
-        $app_package_name,
-        $app_sha256,
-        $app_version,
-        $device_type_name,
-        $device_id,
-        $device_info
-    ) {
-        $this->app_package_name = $app_package_name;
-        $this->app_sha256 = $app_sha256;
-        $this->app_version = $app_version;
-        $this->device_type_name = $device_type_name;
-        $this->device_id = $device_id;
-        $this->device_info = $device_info;
-
+    function check(): ResultData
+    {
+        // 1) Check Run App
         require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/app/on_open_app/run_app/executer.php');
-        $this->check_app =
-            new CheckingAppExecuter(
-                $this->app_package_name,
-                $this->app_sha256,
-                $this->app_version,
-                $this->device_type_name,
-                $this->device_id
-            );
-    }
-    function check()
-    { 
-        $v1 = $this->check_app->check();
-        $c1 = json_decode($v1, true);
-        if ($c1["result"]) {
-           
-            $this->app_data = $c1["data"];
-            if ($this->app_data["device_id"] == null) {
-              
+        $resultData = (new CheckingAppExecuter($this->shared_data))->check();
+        // 
+        if ($resultData->result) {
+            // 2) Check if Device Exist in Database
+            if ($resultData->getDeviceId() == null) {
                 require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/app/on_open_app/shared_checking_level_sql.php');
                 $checking_sql = new SharedCheckingLevelSql("INIT_NEW_DEVICE");
-                $sql = $checking_sql->check_permission($this->app_data);
-                // print_r($sql);
-                $result = fun()->exec_one_sql($sql);
-                if ($result) {
-                    // echo "dd";
-                   
-                    $myArray = array();
-                    while ($row = $result->fetch_assoc()) {
-                        $myArray[] = $row;
+                $sql = $checking_sql->check_permission($resultData->data[0]);
+                // 
+                $resultData1 = fun1()->exec_read_one_sql($sql);
+                if ($resultData1->result) {
+                    // 3) Check Permission in Levels Permissions
+                    $resultData2 = $this->check_all($resultData1, $this->shared_data->getAppVersion(), $checking_sql->permission_name);
+                    if ($resultData2->result) {
+                        return $this->add_device($resultData);
                     }
-                    $this->device_data = $myArray[0]; 
-                    // print_r($this->device_data);
-                    $v1 = $this->check_all($this->device_data, $this->app_version, $checking_sql->permission_name);
-                    $c1 = json_decode($v1, true);
-                    if ($c1["result"]) {
-                        // echo "fff";
-                        return $this->add_device();
-                    }
-                    return $v1;
+                    return $resultData2;
                 }
-                return fun()->ERROR_SQL();
+                return $resultData1;
             }
-            return fun()->SUCCESS_WITH_DATA($this->app_data);
+            return $resultData;
         }
-        return $v1;
+        return $resultData;
     }
 
 
 
-    function add_device()
+    function add_device(ResultData $data): ResultData
     {
         require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/devices/anonymous/executer.php');
         $anonymous_devices_executer = new Anonymous_DevicesExecuter();
-
-        $v1 = $anonymous_devices_executer->execute_insert_sql(
-            $this->device_id,
-            $this->app_data["device_type_id"],
-            $this->device_info
-        );
-        $c1 = json_decode($v1);
-        if ($c1->result) {
-            // echo "dd";
-            $this->app_data["device_id"] = $this->device_id;
-            $this->app_data["device_info"] = $this->device_info;
-            return fun()->SUCCESS_WITH_DATA($this->app_data);
+        //////////////////////////
+        $resultData = $anonymous_devices_executer->execute_insert_sql(
+            $this->shared_data->getDeviceId(),
+            $data->getDeviceTypeId(),
+            $this->shared_data->getDeviceInfo());
+        //////////////////////////
+        if ($resultData->result) {
+            $data->setDeviceId($this->shared_data->getDeviceId());
+            $data->setDeviceInfo($this->shared_data->getDeviceInfo());
+            return $data;
         }
-        return $v1;
+        return $resultData;
     }
 }

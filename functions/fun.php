@@ -386,6 +386,12 @@ class Fun
     $en = "USER_PHONE_MUST_BE_FORMATTED";
     return $this->wrong->wrong_response->response(1071, $ar, $en);
   }
+  function USER_PASSWORD_MUST_BE_FORMATTED(): string
+  {
+    $ar = "USER_PASSWORD_MUST_BE_FORMATTED";
+    $en = "USER_PASSWORD_MUST_BE_FORMATTED";
+    return $this->wrong->wrong_response->response(1071.2, $ar, $en);
+  }
 
   function USER_PASSWORD_INVAILD(): string
   {

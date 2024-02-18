@@ -123,6 +123,7 @@ class CheckingAppSql
     $permission_is_have_a_blocked_a_l_devices_sessions = $this->anonymous_permissions_menu_sql->read_id2_sql($this->permission_id, $this->block_all_id, $level_devices_sessions_id, $this->device_session_id, $this->app_id);
 
     $sql = "SELECT 
+        ($this->permission_id) as permission_id,
         ($this->app_id) as app_id,
         ($group_id) as group_id,
         ($device_type_name) as device_type_name,

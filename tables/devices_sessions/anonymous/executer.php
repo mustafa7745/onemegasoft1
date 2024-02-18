@@ -3,10 +3,10 @@ require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/devices_sessions/
 class Anonymous_DevicesSessionsExecuter extends Anonymous_DevicesSessionsSql
 {
 
-  function execute_insert_sql($device_app_session_id, $device_id, $app_id, $device_app_token): string
+  function execute_insert_sql($device_app_session_id, $device_id, $app_id, $device_app_token): ResultData
   {
     $sql = $this->insert_sql("'$device_app_session_id'", "'$device_id'", "'$app_id'", "'$device_app_token'");
-    return shared_execute_insert_sql($sql);
+    return shared_execute_insert_server_sql($sql);
   }
 
   function execute_update_token_sql($device_id, $app_id, $device_app_token): string

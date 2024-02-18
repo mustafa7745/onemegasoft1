@@ -31,6 +31,7 @@ class SharedCheckingLevelSql
   function check_permission($data): string
   {
     // echo $this->permission_name;
+
     // print_r($data);
     
     $this->app_id = $data["app_id"];
@@ -92,6 +93,7 @@ class SharedCheckingLevelSql
     // echo $permission_group_id;
     // print_r($device_app_ip_session_id);
     $sql = "SELECT 
+        ($this->permission_id) as permission_id,
         ($group_id) as group_id,
         ($permission_group_id) as permission_group_id,
         --

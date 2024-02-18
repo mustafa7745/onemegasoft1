@@ -48,9 +48,31 @@ function shared_execute_read_no_json_sql($sql): string
     return fun()->ERROR_SQL();
 }
 
-function shared_execute_insert_sql($sql)
+function shared_execute_insert_sql($sql):ResultData
 {
     $sql_array = array($sql);
+    $v1 = fun1()->exec_sql($sql_array);
+    if ($v1->result) {
+        return fun1()->SUCCESS_NO_DATA();
+    }
+    return $v1;
+}
+function shared_execute_insert_server_sql($sql):ResultData
+{
+    $sql_array = array($sql);
+    $v1 = fun1()->exec_sql($sql_array);
+    if ($v1->result) {
+        return fun1()->SUCCESS_NO_DATA();
+    }
+    return $v1;
+}
+function shared_execute_insert_sql2($sql, $permission_id, $user_session_id, $device_session_id, $user_insert_operation_values)
+{
+    require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/tables/permissions_groups/user/sql.php');
+
+    $user_insert_operartion_sql = new User_UserInsertOperationsSql();
+    $sql_insert = $user_insert_operartion_sql->insert_sql("'$permission_id'", "'$user_session_id'", "'$device_session_id'", $user_insert_operation_values);
+    $sql_array = array($sql, $sql_insert);
     $v1 = fun()->exec_sql($sql_array);
     $c1 = json_decode($v1);
     if ($c1->result) {
@@ -88,9 +110,9 @@ function shared_execute_update_sql($sql)
     }
     return $v1;
 }
-function shared_execute_update_2sql($sql1,$sql2)
+function shared_execute_update_2sql($sql1, $sql2)
 {
-    $sql_array = array($sql1,$sql2);
+    $sql_array = array($sql1, $sql2);
     $v1 = fun()->exec_sql($sql_array);
     $c1 = json_decode($v1);
     if ($c1->result) {
@@ -120,7 +142,7 @@ function shared_execute_insert1_sql(
         $sql2 = $t_user_insert_operations_sql->insert_sql("'$user_code'", "'$user_id'", "'$device_app_session_id'", $insertd_json);
         //    print_r($sql1);
         //    print_r($sql2);
-        $sql_array = array($sql1,$sql2);
+        $sql_array = array($sql1, $sql2);
         $v1 = fun()->exec_sql($sql_array);
         $c1 = json_decode($v1);
         if ($c1->result) {
@@ -188,7 +210,7 @@ function shared_execute_delete_sql1(
             $t_user_delete_operations_sql = new T_UserDeleteOperationsSql();
             $sql1 = $sql($resData->ids);
             $sql2 = $t_user_delete_operations_sql->insert_sql("'$user_code'", "'$user_id'", "'$device_app_session_id'", "'$deleted_data'");
-            $sql_array = array($sql1,$sql2);
+            $sql_array = array($sql1, $sql2);
             $v1 = fun()->exec_sql($sql_array);
             $c1 = json_decode($v1);
             if ($c1->result) {
@@ -266,7 +288,7 @@ function shared_execute_update1_sql($user_id, $mycode_id, $app_type_id, $device_
         // print_r($sql2);
 
         /////////
-        $sql_array = array($sql1,$sql2);
+        $sql_array = array($sql1, $sql2);
         $v1 = fun()->exec_sql($sql_array);
         $c1 = json_decode($v1);
         if ($c1->result) {
