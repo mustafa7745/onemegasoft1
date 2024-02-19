@@ -91,8 +91,7 @@ class Login extends CheckingLevelPermissions
         $resultData = $user_users_sessions_executer->execute_insert_sql(
             $user_session_id,
             $data->getUserId(),
-            $data->getDeviceSessionId(),
-            fun()
+            $data->getDeviceSessionId()
         ); 
         if ($resultData->result) {
             $data->setUserSessionId($user_session_id);
