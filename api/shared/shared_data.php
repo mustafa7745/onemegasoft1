@@ -45,6 +45,12 @@ class Shared_Data
         $this->filter_posted_data = new FilterPostedData();
         $this->filter_posted_data->data2($this->data1, $this->data2);
     }
+    function checkPostData2()
+    {
+        if (count($_POST) > 2) {
+            $this->exitFromScript(fun1()->MORE_THAN_POST_DATA());
+        }
+    }
     function data3()
     {
         $this->data2();
@@ -161,6 +167,7 @@ class Shared_Data
     }
     function returnData(ResultData $v1)
     {
+        // print_r($v1);
         if (!$v1->result) {
             $this->exitFromScript($v1->data);
         }

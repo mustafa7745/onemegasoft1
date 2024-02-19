@@ -10,12 +10,13 @@ class CheckingInitDeviceSession extends CheckingLevelPermissions
     }
     function check(): ResultData
     {
-
+        // print_r("mu");
         // 1) Check Run App
         require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/app/on_open_app/init_device/executer.php');
         $resultData = (new CheckingInitDevice($this->shared_data))->check();
         // 
         if ($resultData->result) {
+            // print_r("mu");
             // 2) Check if Device Session Exist in Database
             if ($resultData->getDeviceSessionId() == null) {
                 require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/app/on_open_app/shared_checking_level_sql.php');

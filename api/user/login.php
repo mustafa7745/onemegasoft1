@@ -15,6 +15,7 @@ class ThisClass
   {
     $this->shared_data = new Shared_Data();
     $this->shared_data->data2();
+    $this->shared_data->checkPostData2();
     // 
     $this->controller = new Login($this->shared_data);
   }
@@ -22,12 +23,11 @@ class ThisClass
   function main(): string
   {
     // sleep(3);
-    $v1 = $this->controller->check();
-    $c1 = json_decode($v1);
-    if ($c1->result) {
-      return $v1;
+    $resultData = $this->controller->check();
+    if ($resultData->result) {
+      return json_encode($resultData->data);
     }
-    return $v1;
+    return json_encode($resultData->data) ; 
   }
 }
 

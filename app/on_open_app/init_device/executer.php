@@ -10,17 +10,21 @@ class CheckingInitDevice extends CheckingLevelPermissions
     }
     function check(): ResultData
     {
+        
         // 1) Check Run App
         require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/app/on_open_app/run_app/executer.php');
         $resultData = (new CheckingAppExecuter($this->shared_data))->check();
         // 
         if ($resultData->result) {
+           
             // 2) Check if Device Exist in Database
             if ($resultData->getDeviceId() == null) {
+                // print_r("mu");
                 require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/app/on_open_app/shared_checking_level_sql.php');
                 $checking_sql = new SharedCheckingLevelSql("INIT_NEW_DEVICE");
                 $sql = $checking_sql->check_permission($resultData->data[0]);
                 // 
+                // print_r("mu");
                 $resultData1 = fun1()->exec_read_one_sql($sql);
                 if ($resultData1->result) {
                     // 3) Check Permission in Levels Permissions

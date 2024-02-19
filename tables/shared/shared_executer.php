@@ -34,18 +34,13 @@ function shared_execute_read_one_sql($sql): string
     }
     return fun()->ERROR_SQL();
 }
-function shared_execute_read_no_json_sql($sql): string
+function shared_execute_read_no_json_sql($sql): ResultData
 {
-    $result = fun()->exec_one_sql($sql);
-    if ($result) {
-        $myArray = array();
-        while ($row = $result->fetch_assoc()) {
-            $myArray[] = $row;
-        }
-        $data = $myArray;
-        return fun()->SUCCESS_WITH_DATA($data);
-    }
-    return fun()->ERROR_SQL();
+    return fun1()->exec_read_one_sql($sql);
+    // if ($resultData->result) {
+    //    return 
+    // }
+    // return fun()->ERROR_SQL();
 }
 
 function shared_execute_insert_sql($sql):ResultData

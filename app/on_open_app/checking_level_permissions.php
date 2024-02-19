@@ -138,10 +138,10 @@ class CheckingLevelPermissions
         if ($data->getPermissionIsHaveBlockedAllLevelUsers() != null) {
             //    print_r("ff");
             if ($data->getPermissionIsHaveAllowBlockAllLevelUsers() != null) {
-                return fun1()->SUCCESS_WITH_DATA($data);
+                return $data;
             }
             if ($data->getPermissionIsHaveAllowLevelUsers() != null) {
-                return fun1()->SUCCESS_WITH_DATA($data);
+                return $data;
             }
             return fun1()->PERMISSION_IS_BLOCKED_FROM_USE_IN($this->permission_name, $place);
         }
@@ -149,6 +149,6 @@ class CheckingLevelPermissions
             // print_r("ff");
             return fun1()->PERMISSION_IS_BLOCKED_FROM_USE_IN($this->permission_name, $place);
         }
-        return fun1()->SUCCESS_WITH_DATA($data);
+        return $data;
     }
 }

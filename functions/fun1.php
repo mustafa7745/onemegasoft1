@@ -259,6 +259,43 @@ class Fun1
     $en = "MORE_THAN_POST_DATA";
     return $this->wrong_response->error_response($ar, $en, 1002);
   }
+  
+  function USER_OR_PASSWORD_ERROR(): ResultData
+  {
+    $ar = "البيانات خاطئة";
+    $en = "USER_OR_PASSWORD_ERROR";
+    return $this->wrong_response->error_response($ar, $en, 1002);
+  }
+  function USER_PHONE_MUST_BE_FORMATTED(): ResultData
+  {
+    $ar = "USER_PHONE_MUST_BE_FORMATTED";
+    $en = "USER_PHONE_MUST_BE_FORMATTED";
+    return $this->wrong_response->error_response($ar, $en, 1002);
+  }
+  function USER_PASSWORD_MUST_BE_FORMATTED(): ResultData
+  {
+    $ar = "USER_PASSWORD_MUST_BE_FORMATTED";
+    $en = "USER_PASSWORD_MUST_BE_FORMATTED";
+    return $this->wrong_response->error_response($ar, $en, 1002);
+  }
+  function USER_SESSION_NOT_FOUND_PLEASE_LOGIN_AGAIN(): ResultData
+  {
+    $ar = "USER_SESSION_NOT_FOUND_PLEASE_LOGIN_AGAIN";
+    $en = "USER_SESSION_NOT_FOUND_PLEASE_LOGIN_AGAIN";
+    return $this->wrong_response->error_response($ar, $en, 1002);
+  }
+  function TAG_EMPTY_OR_NOT_FOUND(): ResultData
+  {
+    $ar = "TAG_EMPTY_OR_NOT_FOUND";
+    $en = "TAG_EMPTY_OR_NOT_FOUND";
+    return $this->wrong_response->error_response($ar, $en, 1002);
+  }
+  function FROM_EMPTY_OR_NOT_FOUND(): ResultData
+  {
+    $ar = "FROM_EMPTY_OR_NOT_FOUND";
+    $en = "FROM_EMPTY_OR_NOT_FOUND";
+    return $this->wrong_response->error_response($ar, $en, 1002);
+  }
 
   function resultData($result, $data, $code = 0)
   {

@@ -17,26 +17,16 @@ class ThisClass
     $this->shared_data = new Shared_Data();
     $this->shared_data->data3();
     //
-    $this->controller = new Permissions(
-      $this->shared_data->getAppPackageName(),
-      $this->shared_data->getSha(),
-      $this->shared_data->getAppVersion(),
-      $this->shared_data->getDeviceTypeName(),
-      $this->shared_data->getDeviceId(),
-      $this->shared_data->getDeviceInfo(),
-      $this->shared_data->getDeviceAppToken(),
-      $this->shared_data->getUserPhone(),
-      $this->shared_data->getUserPassword()
-    );
+    $this->controller = new Permissions($this->shared_data);
   }
 
 
   function main(): string
   {
-    $v1 = '';
+    $resultData ;
     if ($this->shared_data->getTag() == "read") {
-      sleep(10);
-      $v1 = $this->controller->read_permissions($this->shared_data->getFrom());
+      // sleep(10);
+      $resultData = $this->controller->read_permissions($this->shared_data->getFrom());
     } elseif ($this->shared_data->getTag() == "SEARCH") {
       // print_r(isset($data["SEARCH_BY"]) );
       if (isset($data["SEARCH_BY"]) && isset($data["SEARCH"])) {
@@ -63,15 +53,11 @@ class ThisClass
 
 
 
-
-
-
-    $c1 = json_decode($v1, true);
-    if ($c1["result"]) {
-      return json_encode($c1["data"]);
-    }
-    return $v1;
-  }
+      if ($resultData->result) {
+        return json_encode($resultData->data);
+      }
+      return json_encode($resultData->data) ;
+}
 }
 
 $this_class = new ThisClass();

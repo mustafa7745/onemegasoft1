@@ -15,6 +15,7 @@ class CheckingInitDeviceSessionIp extends CheckingLevelPermissions
         // 1) Check Run App
         require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/app/on_open_app/init_device_session/executer.php');
         $resultData = (new CheckingInitDeviceSession($this->shared_data))->check();
+        // print_r("mu");
         // 
         if ($resultData->result) {
             // 2) Check if Device Session Exist in Database
@@ -28,6 +29,7 @@ class CheckingInitDeviceSessionIp extends CheckingLevelPermissions
                     // 3) Check Permission in Levels Permissions
                     $resultData2 = $this->check_all($resultData1, $this->shared_data->getAppVersion(), $checking_sql->permission_name);
                     if ($resultData2->result) {
+                        // print_r("mu");
                         return $this->index($resultData);
                     }
                     return $resultData2;

@@ -162,37 +162,37 @@ class FilterPostedData
         return fun1()->SUCCESS_WITH_DATA($value);
     }
     // 
-    function checkUserPhone(): string
+    function checkUserPhone(): ResultData
     {
         // print_r($this->data2);
         $name = "user_phone";
         if (!isset($this->data2[$name]) || empty($this->data2[$name])) {
-            return fun()->USER_PHONE_MUST_BE_FORMATTED();
+            return fun1()->USER_PHONE_MUST_BE_FORMATTED();
         }
         $value = $this->data2[$name];
         if (!is_numeric($value)) {
 
-            return fun()->USER_PHONE_MUST_BE_FORMATTED();
+            return fun1()->USER_PHONE_MUST_BE_FORMATTED();
         }
         $array = array("967");
         for ($i = 0; $i < count($array); $i++) {
             if (!str_starts_with($value, $array[$i])) {
-                return fun()->USER_PHONE_MUST_BE_FORMATTED();
+                return fun1()->USER_PHONE_MUST_BE_FORMATTED();
             }
         }
         if (str_starts_with($value, "967")) {
             if (strlen($value) != 12) {
-                return fun()->USER_PHONE_MUST_BE_FORMATTED();
+                return fun1()->USER_PHONE_MUST_BE_FORMATTED();
             }
         }
-        return fun()->SUCCESS_WITH_DATA($value);
+        return fun1()->SUCCESS_WITH_DATA($value);
     }
     // 
-    function checkUserPassword(): string
+    function checkUserPassword(): ResultData
     {
         $name = "user_password";
         if (!isset($this->data2[$name]) || empty($this->data2[$name])) {
-            return fun()->USER_PASSWORD_MUST_BE_FORMATTED();
+            return fun1()->USER_PASSWORD_MUST_BE_FORMATTED();
         }
         $value = $this->data2[$name];
         // if (strlen($value) != 5) {
@@ -208,31 +208,31 @@ class FilterPostedData
         // if (!preg_match("/[A-Za-z]/", $value)) {
         //     return $fun->USER_PASSWORD_INVAILD();
         // }
-        return fun()->SUCCESS_WITH_DATA($value);
+        return fun1()->SUCCESS_WITH_DATA($value);
     }
     // 
     // 
-    function checkTag(): string
+    function checkTag(): ResultData
     {
         $name = "tag";
         if (!isset($this->data3[$name]) || empty($this->data3[$name])) {
-            return fun()->TAG_EMPTY_OR_NOT_FOUND();
+            return fun1()->TAG_EMPTY_OR_NOT_FOUND();
         }
         $value = $this->data3[$name];
-        return fun()->SUCCESS_WITH_DATA($value);
+        return fun1()->SUCCESS_WITH_DATA($value);
     }
     // 
-    function checkFrom(): string
+    function checkFrom(): ResultData
     {
         $name = "from";
         if (!isset($this->data3[$name])) {
-            return fun()->FROM_EMPTY_OR_NOT_FOUND();
+            return fun1()->FROM_EMPTY_OR_NOT_FOUND();
         }
         $value = $this->data3[$name];
         if (!is_numeric($value)) {
             return fun()->FROM_MUST_BE_NUMBER();
         }
-        return fun()->SUCCESS_WITH_DATA($value);
+        return fun1()->SUCCESS_WITH_DATA($value);
     }
     // 
     function checkName(): string

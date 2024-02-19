@@ -24,6 +24,13 @@ class ResultData
         }
         return false;
     }
+    function issetUserSessionId(): bool
+    {
+        if (isset($this->data[0]['user_session_id'])) {
+            return true;
+        }
+        return false;
+    }
 
     function getAppId()
     {
@@ -64,6 +71,10 @@ class ResultData
     function setDeviceInfo($data)
     {
      $this->data[0]['device_info'] = $data;
+    }
+    function setUserSessionId($data)
+    {
+     $this->data[0]['user_session_id'] = $data;
     }
     function setIp($data)
     {

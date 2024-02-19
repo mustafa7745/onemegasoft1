@@ -31,9 +31,12 @@ class CheckingAppExecuter extends CheckingLevelPermissions
         $c1 = $this->executeSql();
         if ($c1->result) {
             if ($c1->getAppId()) {
+              
                 if ($c1->getDeviceTypeName()) {
                    $v = $this->check_all($c1, $this->shared_data->getAppVersion(), $this->checking_sql->permission_name);
+                //    print_r($v);
                    return $v;
+                  
                 }
                 return fun1()->UNKWON_DEVICE_TYPE();
             }
