@@ -19,6 +19,13 @@ class MainSqlPermissions extends PermissionsAttribute
         /////
         return read_limit_sql($table_name, $column, $innerJoin,$orederdBy,$orederdType,$offset, $condition);
     }
+    function r_in_sql($innerJoin, $condition): string
+    {
+        $table_name = $this->table_name;
+        $column = " * ";
+        /////
+        return read_sql($table_name, $column,$innerJoin, $condition);
+    }
    
     function d_sql($condition): string
     {

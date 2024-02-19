@@ -235,45 +235,64 @@ class FilterPostedData
         return fun1()->SUCCESS_WITH_DATA($value);
     }
     // 
-    function checkName(): string
+    function checkName(): ResultData
     {
         $name = "name";
         if (!isset($this->data3[$name])) {
-            return fun()->FROM_EMPTY_OR_NOT_FOUND();
+            return fun1()->NAME_EMPTY_OR_NOT_FOUND();
         }
         $value = $this->data3[$name];
         
         // $value = addslashes($value);
-
-       
-        return fun()->SUCCESS_WITH_DATA($value);
+        return fun1()->SUCCESS_WITH_DATA($value);
     }
-    // 
-    function checkIds()
+    function checkSearchBy(): ResultData
     {
-        $name = "ids";
+        $name = "searchBy";
         if (!isset($this->data3[$name])) {
-            return fun()->IDS_EMPTY_OR_NOT_FOUND();
+            return fun1()->SEARCH_BY_EMPTY_OR_NOT_FOUND();
         }
         $value = $this->data3[$name];
-        $v1 = fun()->CONVERT_IDS_TO_LIST(json_encode($value));
-        $c1 = json_decode($v1, true);
-        // print_r($c1 );
-        if (!$c1["result"]) {
-            return $v1;
+        
+        // $value = addslashes($value);
+        return fun1()->SUCCESS_WITH_DATA($value);
+    }
+    // 
+    function checkSearch(): ResultData
+    {
+        $name = "search";
+        if (!isset($this->data3[$name])) {
+            return fun1()->SEARCH_EMPTY_OR_NOT_FOUND();
         }
-        return fun()->SUCCESS_WITH_DATA($c1["data"]);
+        $value = $this->data3[$name];
+        
+        // $value = addslashes($value);
+        return fun1()->SUCCESS_WITH_DATA($value);
+    }
+    // 
+    function checkIds():ResultData
+    {
+        // print_r("ddd");
+        $name = "ids";
+        if (!isset($this->data3[$name])) {
+            // print_r("ddd");
+            return fun1()->IDS_EMPTY_OR_NOT_FOUND();
+        }
+        // print_r("ddd");
+        $value = $this->data3[$name];
+        return fun1()->CONVERT_IDS_TO_LIST(json_encode($value));
+        
     }
     // 
     function checkId()
     {
         $name = "id";
         if (!isset($this->data3[$name])) {
-            return fun()->ID_EMPTY_OR_NOT_FOUND();
+            return fun1()->ID_EMPTY_OR_NOT_FOUND();
         }
         $value = $this->data3[$name];
 
-        return fun()->SUCCESS_WITH_DATA($value);
+        return fun1()->SUCCESS_WITH_DATA($value);
     }
     // 
     function filterAppPackageName(Fun $fun): string

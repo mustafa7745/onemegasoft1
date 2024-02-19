@@ -296,6 +296,72 @@ class Fun1
     $en = "FROM_EMPTY_OR_NOT_FOUND";
     return $this->wrong_response->error_response($ar, $en, 1002);
   }
+  function NAME_EMPTY_OR_NOT_FOUND(): ResultData
+  {
+    $ar = "NAME_EMPTY_OR_NOT_FOUND";
+    $en = "NAME_EMPTY_OR_NOT_FOUND";
+    return $this->wrong_response->error_response($ar, $en, 1002);
+  }
+  function SEARCH_BY_EMPTY_OR_NOT_FOUND(): ResultData
+  {
+    $ar = "SEARCH_BY_EMPTY_OR_NOT_FOUND";
+    $en = "SEARCH_BY_EMPTY_OR_NOT_FOUND";
+    return $this->wrong_response->error_response($ar, $en, 1002);
+  }
+  function SEARCH_EMPTY_OR_NOT_FOUND(): ResultData
+  {
+    $ar = "SEARCH_EMPTY_OR_NOT_FOUND";
+    $en = "SEARCH_EMPTY_OR_NOT_FOUND";
+    return $this->wrong_response->error_response($ar, $en, 1002);
+  }
+  function UNKOWN_TAG(): ResultData
+  {
+    $ar = "UNKOWN_TAG";
+    $en = "UNKOWN_TAG";
+    return $this->wrong_response->error_response($ar, $en, 1002);
+  }
+  function UNKOWN_SEARCH_BY(): ResultData
+  {
+    $ar = "UNKOWN_SEARCH_BY";
+    $en = "UNKOWN_SEARCH_BY";
+    return $this->wrong_response->error_response($ar, $en, 1002);
+  }
+  function IDS_EMPTY_OR_NOT_FOUND(): ResultData
+  {
+    $ar = "IDS_EMPTY_OR_NOT_FOUND";
+    $en = "IDS_EMPTY_OR_NOT_FOUND";
+    return $this->wrong_response->error_response($ar, $en, 1002);
+  }
+  function INCOMPATABLE_DELETD_DATA_COUNT(): ResultData
+  {
+    $ar = "INCOMPATABLE_DELETD_DATA_COUNT";
+    $en = "INCOMPATABLE_DELETD_DATA_COUNT";
+    return $this->wrong_response->error_response($ar, $en, 1002);
+  }
+  function ID_EMPTY_OR_NOT_FOUND(): ResultData
+  {
+    $ar = "ID_EMPTY_OR_NOT_FOUND";
+    $en = "ID_EMPTY_OR_NOT_FOUND";
+    return $this->wrong_response->error_response($ar, $en, 1002);
+  }
+  function CONVERT_IDS_TO_LIST($ids_json): ResultData
+  {
+      if (!$this->json_validate($ids_json)) {
+        return $this->JSON_FORMAT_INVALID();
+      }
+      $data = json_decode($ids_json, true);
+
+      $count = count($data);
+      $r = "";
+      foreach ($data as $key => $value) {
+        $r .= "'$value'";
+        if ($count != $key) {
+          $r .= ",";
+        }
+      }
+      $data = json_encode(array('count'=> $count,"ids"=>$r));
+      return $this->SUCCESS_WITH_DATA($data);
+  }
 
   function resultData($result, $data, $code = 0)
   {

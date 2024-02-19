@@ -19,13 +19,13 @@ class User_PermissionsSql extends MainSqlPermissions
         /////
         return $this->r_sql($innerJoin, $condition, "0");
     }
-    function read_in_sql($in_data): string
+    function read_in_sql($ids): string
     {
         // return "(SELECT $this->device_app_session_id FROM $this->table_name WHERE $this->device_id = $device_id and $this->app_id = $app_id)";
         $innerJoin = "";
-        $condition = "$this->permission_id IN ($in_data)";
+        $condition = "$this->permission_id IN ($ids)";
         /////
-        return $this->r_sql($innerJoin, $condition);
+        return $this->r_in_sql($innerJoin, $condition);
     }
     function search_by_name_for_add_to_pg_sql($search, $offset, $group_id): string
     {
@@ -47,13 +47,31 @@ class User_PermissionsSql extends MainSqlPermissions
         /////
         return shared_insert_sql($table_name, $columns, $values);
     }
-    function search_by_name_sql($search,$offset): string
+    function readOneJson($id): string
     {
-       
+
+        return "(SELECT JSON_OBJECT('$this->permission_id',$this->permission_id,
+         '$this->permission_name', $this->permission_name)
+         FROM $this->table_name WHERE $this->permission_id = $id)
+         ";
+
+    }
+    function read_name_json_sql($id): string
+    {
+
+        return "(SELECT JSON_OBJECT(
+         '$this->permission_name', $this->permission_name)
+         FROM $this->table_name WHERE $this->permission_id = $id)
+         ";
+
+    }
+    function search_by_name_sql($search, $offset): string
+    {
+
         $innerJoin = "";
         $condition = "$this->permission_name LIKE '%$search%'";
         /////
-        return $this->r_sql($innerJoin, $condition,$offset);
+        return $this->r_sql($innerJoin, $condition, $offset);
     }
     function delete_sql($ids): string
     {
@@ -61,11 +79,11 @@ class User_PermissionsSql extends MainSqlPermissions
         /////
         return $this->d_sql($condition);
     }
-    function update_name_sql($name,$id): string
+    function update_name_sql($name, $id): string
     {
         $set_query = "SET $this->permission_name = $name";
         $condition = "$this->permission_id = $id";
         /////
-        return $this->upd_sql( $set_query,$condition);
+        return $this->upd_sql($set_query, $condition);
     }
 }

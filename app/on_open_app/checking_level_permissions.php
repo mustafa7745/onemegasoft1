@@ -11,8 +11,8 @@ class CheckingLevelPermissions
         $this->app_version = $app_version;
         if ($data->issetUserId() and $data->getUserId() != null) {
             return $this->check_user($data, $this->permission_name);
-
         }
+        
         return $this->check_anonymous($data, $permission_name);
     }
 
@@ -38,6 +38,7 @@ class CheckingLevelPermissions
                     if (!$data->getPermissionIRU()) {
                         return $this->check_apps_level($data);
                     }
+                    // print_r($data);
                     // print_r($data["app_version"]);
                     if ($data->getAppVersion() <= $this->app_version) {
                         return $this->check_apps_level($data);

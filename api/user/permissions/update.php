@@ -21,15 +21,11 @@ class ThisClass
 
   function main(): string
   {
-    $resultData = '';
-    // sleep(1);
-    if ($this->shared_data->getTag() == "add") {
-      $resultData = $this->controller->add_permission($this->shared_data->getName());
-    } else
-      return json_encode(fun1()->UNKOWN_TAG());
 
+    $this->shared_data->getTagUpdate();
+    $resultData = $this->controller->update_permission($this->shared_data->getName(), $this->shared_data->getId());
     if ($resultData->result) {
-      return json_encode($resultData->data[0]);
+      return json_encode($resultData->data);
     }
     return json_encode($resultData->data);
   }

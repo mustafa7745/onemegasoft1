@@ -6,6 +6,12 @@ function read_limit_sql($table_name,$columns, $innerJoin, $orederdBy, $orederdTy
     // print_r($sql);
     return $sql;
 }
+function read_sql($table_name,$columns, $innerJoin, $condition): string
+{
+    $sql = "(SELECT $columns FROM $table_name $innerJoin WHERE $condition)";
+    // print_r($sql);
+    return $sql;
+}
 
 function NATIVE_INNER_JOIN($table_name, $id): string
 {

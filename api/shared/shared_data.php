@@ -17,7 +17,7 @@ class Shared_Data
         if (!isset($_POST[$name])) {
             $this->exitFromScript(fun1()->POST_DATA_NOT_FOUND(1));
         }
-        if (!fun()->json_validate($_POST[$name])) {
+        if (!fun1()->json_validate($_POST[$name])) {
             $this->exitFromScript(fun1()->JSON_FORMAT_INVALID("DATA1"));
         }
         $this->data1 = json_decode($_POST[$name], true);
@@ -36,10 +36,10 @@ class Shared_Data
         // 
         $name = "data2";
         if (!isset($_POST[$name])) {
-            $this->exitFromScript(fun()->POST_DATA_NOT_FOUND(2));
+            $this->exitFromScript(fun1()->POST_DATA_NOT_FOUND(2));
         }
-        if (!fun()->json_validate($_POST[$name])) {
-            $this->exitFromScript(fun()->JSON_FORMAT_INVALID("DATA2"));
+        if (!fun1()->json_validate($_POST[$name])) {
+            $this->exitFromScript(fun1()->JSON_FORMAT_INVALID("DATA2"));
         }
         $this->data2 = json_decode($_POST[$name], true);
         $this->filter_posted_data = new FilterPostedData();
@@ -57,14 +57,20 @@ class Shared_Data
         // 
         $name = "data3";
         if (!isset($_POST[$name])) {
-            $this->exitFromScript(fun()->POST_DATA_NOT_FOUND(3));
+            $this->exitFromScript(fun1()->POST_DATA_NOT_FOUND(3));
         }
-        if (!fun()->json_validate($_POST[$name])) {
-            $this->exitFromScript(fun()->JSON_FORMAT_INVALID("DATA3"));
+        if (!fun1()->json_validate($_POST[$name])) {
+            $this->exitFromScript(fun1()->JSON_FORMAT_INVALID("DATA3"));
         }
         $this->data3 = json_decode($_POST[$name], true);
         $this->filter_posted_data = new FilterPostedData();
         $this->filter_posted_data->data3($this->data1, $this->data2, $this->data3);
+    }
+    function checkPostData3()
+    {
+        if (count($_POST) > 3) {
+            $this->exitFromScript(fun1()->MORE_THAN_POST_DATA());
+        }
     }
     function issetData2()
     {
@@ -128,19 +134,19 @@ class Shared_Data
     function getTagUpdate()
     {
         if ($this->getTag() != "update") {
-            $this->exitFromScript(fun()->UNKOWN_TAG());
+            $this->exitFromScript(fun1()->UNKOWN_TAG());
         }
     }
     function getTagRead()
     {
         if ($this->getTag() != "read") {
-            $this->exitFromScript(fun()->UNKOWN_TAG());
+            $this->exitFromScript(fun1()->UNKOWN_TAG());
         }
     }
     function getTagDelete()
     {
         if ($this->getTag() != "update") {
-            $this->exitFromScript(fun()->UNKOWN_TAG());
+            $this->exitFromScript(fun1()->UNKOWN_TAG());
         }
     }
     function getFrom()
@@ -153,11 +159,22 @@ class Shared_Data
         $v1 = $this->filter_posted_data->checkName();
         return $this->returnData($v1);
     }
+    function getSearchBy()
+    {
+        $v1 = $this->filter_posted_data->checkSearchBy();
+        return $this->returnData($v1);
+    }
+    function getSearch()
+    {
+        $v1 = $this->filter_posted_data->checkSearch();
+        return $this->returnData($v1);
+    }
 
 
     function getIds()
     {
         $v1 = $this->filter_posted_data->checkIds();
+       
         return $this->returnData($v1);
     }
     function getId()
@@ -169,13 +186,14 @@ class Shared_Data
     {
         // print_r($v1);
         if (!$v1->result) {
+            // print_r(json_encode($v1->data));
             $this->exitFromScript($v1->data);
         }
         return $v1->data;
     }
     private function exitFromScript($v1)
     {
-        echo json_encode($v1->data);
+        echo json_encode($v1);
         exit();
     }
 

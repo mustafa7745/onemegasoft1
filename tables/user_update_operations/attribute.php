@@ -6,8 +6,9 @@ class UserUpdateOperationsAttribute
     /////
     public $table_name = "user_update_operations";
     public $user_update_operation_id = "user_update_operation_id";
-    public $user_code = "user_code";
-    public $device_app_session_id = "device_app_session_id";
+    public $permission_id = "permission_id";
+    public $user_session_id = "user_session_id";
+    public $updated_id = "updated_id";
     public $user_update_operation_pre_value = "user_update_operation_pre_value";
     public $user_update_operation_post_value = "user_update_operation_post_value";
     public $user_update_operation_created_at = "user_update_operation_created_at";

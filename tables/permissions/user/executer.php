@@ -25,46 +25,48 @@ class User_PermissionsExecuter extends User_PermissionsSql
     // print_r($sql);
     return shared_execute_read_no_json_sql($sql);
   }
-  function execute_add_permission_sql($permission_name): string
+  function execute_add_permission_sql($permission_name, ResultData $data): ResultData
   {
     $permission_id = uniqid(rand(), false);
-    $sql = $this->add_permission_sql("'$permission_id'", "'$permission_name'");
+    $sql1 = $this->add_permission_sql("'$permission_id'", "'$permission_name'");
+    $sql2 = $this->readOneJson("'$permission_id'");
     // print_r($sql);
-    $v1 = shared_execute_insert_sql1($sql);
-    $c1 = json_decode($v1, true);
-    if ($c1["result"]) {
+    $resultData = shared_execute_insert_sql($sql1, $sql2, $data);
+    if ($resultData->result) {
       $sql = $this->read_one_by_id_sql("'$permission_id'");
-
-      $v1 = shared_execute_read_no_json_sql($sql);
-      $c1 = json_decode($v1,true);
-      if ($c1["result"]){
-        // print_r($c1);
-        return fun()->SUCCESS_WITH_DATA($c1["data"][0]) ;
+      $resultData1 = shared_execute_read_no_json_sql($sql);
+      if ($resultData1) {
+        return $resultData1;
       }
-      return fun()->INSERTED_BUT_CANNOT_READ();
+      return fun1()->SUCCESS_NO_DATA();
     }
-    return $v1;
+    return $resultData;
   }
 
-  function execute_search_by_name_sql($search, $offset): string
+  function execute_search_by_name_sql($search, $offset): ResultData
   {
     $sql = $this->search_by_name_sql($search, $offset);
     // print_r($sql);
     return shared_execute_read_no_json_sql($sql);
   }
 
-  function execute_delete_sql($ids): string
+  function execute_delete_sql($ids, $count, ResultData $data): ResultData
   {
-    $sql = $this->delete_sql($ids);
+
+    $sqlRead = $this->read_in_sql($ids);
+    $sql1 = $this->delete_sql($ids);
+
     // print_r($sql);
-    return shared_execute_delete_sql($sql);
+    return shared_execute_delete_sql($sql1, $sqlRead, $count, $data);
   }
 
-  function execute_update_name_sql($name, $id): string
+  function execute_update_name_sql($name, $id, ResultData $data): ResultData
   {
-    $sql = $this->update_name_sql("'$name'", "'$id'");
+    $sqlPreValue = $this->read_name_json_sql("'$id'");
+    $sqlUpdate = $this->update_name_sql("'$name'", "'$id'");
+    $newValue = json_encode($name);
     // print_r($sql);
-    return shared_execute_delete_sql($sql);
+    return shared_execute_update_sql($sqlPreValue, $sqlUpdate, $newValue, $id, $data);
   }
 }
 ?>

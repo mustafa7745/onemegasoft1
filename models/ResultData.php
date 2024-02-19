@@ -17,6 +17,22 @@ class ResultData
     {
         return $this->data[0]['user_id'];
     }
+    function getUserSessionId()
+    {
+        return $this->data[0]['user_session_id'];
+    }
+    function getPermissionId()
+    {
+        return $this->data[0]['permission_id'];
+    }
+    function getData()
+    {
+        return $this->data[0];
+    }
+    function setPermissionId($data)
+    {
+        $this->data[0]['permission_id'] = $data;
+    }
     function issetUserId(): bool
     {
         if (isset($this->data[0]['user_id'])) {
@@ -51,6 +67,10 @@ class ResultData
     function getAppVersion()
     {
         return $this->data[0]['app_version'];
+    }
+    function setAppVersion($data)
+    {
+     $this->data[0]['app_version'] = $data;
     }
     function getDeviceId()
     {

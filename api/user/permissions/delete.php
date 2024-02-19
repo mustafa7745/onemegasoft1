@@ -1,13 +1,8 @@
 <?php
-$root = "onemegasoft1";
-require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/app/on_login/permissions/executer.php");
-require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/api/shared/shared_data.php");
-
-/////////////////
+require_once("./init.php");
 
 class ThisClass
 {
-  // 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
   public $controller;
   public $shared_data;
   // 
@@ -16,38 +11,31 @@ class ThisClass
   {
     $this->shared_data = new Shared_Data();
     $this->shared_data->data3();
-    //
-    $this->controller = new Permissions(
-      $this->shared_data->getAppPackageName(),
-      $this->shared_data->getSha(),
-      $this->shared_data->getAppVersion(),
-      $this->shared_data->getDeviceTypeName(),
-      $this->shared_data->getDeviceId(),
-      $this->shared_data->getDeviceInfo(),
-      $this->shared_data->getDeviceAppToken(),
-      $this->shared_data->getUserPhone(),
-      $this->shared_data->getUserPassword()
-    );
+    $this->shared_data->checkPostData3();
+    // 
+    $this->controller = getPermission($this->shared_data);
   }
 
 
   function main(): string
   {
 
-    $v1 = '';
-    // sleep(1);
+    $resultData = null; 
     if ($this->shared_data->getTag() == "delete") {
-      $ids = json_decode($this->shared_data->getIds(),TRUE);
-      // print_r($ids["ids"]);
-      $v1 = $this->controller->delete_permission($ids["ids"]);
+      $v1 = json_decode($this->shared_data->getIds(),TRUE);
+      $ids = $v1["ids"];
+      $count = $v1["count"];
+      // 
+      $resultData = $this->controller->delete_permission($ids,$count);
+      if ($resultData->result) {
+        return json_encode($resultData->data);
+      }
+      return json_encode($resultData->data) ;
+      // 
     } else
-      return fun()->UNKOWN_TAG();
+      return json_encode(fun1()->UNKOWN_TAG());
 
-    $c1 = json_decode($v1, true);
-    if ($c1["result"]) {
-      return json_encode($c1["data"]);
-    }
-    return $v1;
+   
   }
 }
 $this_class = new ThisClass();
