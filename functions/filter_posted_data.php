@@ -122,7 +122,7 @@ class FilterPostedData
         // print_r($this->data1[$name]);
         $info = json_encode($this->data1[$name]);
         // print_r($info);
-        if (!fun()->json_validate($info)) {
+        if (!fun1()->json_validate($info)) {
             return fun1()->JSON_FORMAT_INVALID("DEVCIE_INFO");
         }
         $value = $info;
