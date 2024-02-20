@@ -1,30 +1,23 @@
 <?php
-$root = "onemegasoft1";
-require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/app/on_login/groups/executer.php");
-require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/api/shared/shared_post_level.php");
+require_once("./init.php");
 /////////////////
 
 class ThisClass
 {
   
-  public $isSetId = false;
-  // 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
   public $controller;
-  public $shared_post_level;
+  public $shared_data;
   // 
-  public $id;
 
   function __construct()
   {
-    $this->shared_post_level = new SharedPostLevel();
-    // if (isset($_POST["id"])&& $_POST["id"] !=null) {
-    //   array_push($GLOBALS['va'],"id");
-    //   $this->id = $_POST["id"];
-    //   $this->id = check_id($this->id);
-    // }
-    checkPosts2($GLOBALS['va']);
-   
+    $this->shared_data = new Shared_Data();
+    $this->shared_data->data3();
+    $this->shared_data->checkPostData3();
+    //
+    $this->controller = getPermission($this->shared_data);
   }
+
   function init()
   {
     // echo "dd";

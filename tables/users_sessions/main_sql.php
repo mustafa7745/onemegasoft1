@@ -6,7 +6,6 @@ class MainSqlUsersSessions extends UsersSessionsAttribute
     {
         $table_name = $this->table_name;
         $column = "{$this->table_name}.{$this->user_session_id}";
-        // print_r($column);
         /////
         return read_by_condition_sql($table_name, $column, $innerJoin, $condition);
     }

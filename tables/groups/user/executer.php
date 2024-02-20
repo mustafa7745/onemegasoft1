@@ -4,7 +4,7 @@ class User_GroupsExecuter extends User_GroupsSql
 {
 
 
-  function execute_read_sql(): string
+  function execute_read_sql(): ResultData
   {
     $sql = $this->read_sql();
     $this->initJson();

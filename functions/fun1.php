@@ -1,21 +1,15 @@
 <?php
 require_once($_SERVER["DOCUMENT_ROOT"] . '/onemegasoft1/database_connection/database.php');
-require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/functions/wrong.php");
-require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/functions/success.php");
-require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/functions/filter_posted_data.php");
 require_once($_SERVER["DOCUMENT_ROOT"] . "/$root/functions/_wrong_response.php");
 class Fun1
 {
   public $wrong_response;
-  public $success;
   public $db;
-  public $filter_posted_data;
 
   function __construct()
   {
     $this->db = new DB();
     $this->wrong_response = new WrongResponse();
-    $this->success = new Success();
   }
 
   function isExecuted($arr): bool
@@ -33,6 +27,7 @@ class Fun1
 
   function exec_sql($sql_array): ResultData
   {
+    // print_r($sql_array);
     try {
       $errors = array();
       $array_effected = array();
@@ -73,7 +68,7 @@ class Fun1
         return $this->SUBQUERY_MORE_ONE();
       }
     }
-    return $this->ERROR_SQL();
+    return $this->ERROR_SQL_NAME();
   }
 
   function exec_read_one_sql($sql)
@@ -294,6 +289,12 @@ class Fun1
   {
     $ar = "FROM_EMPTY_OR_NOT_FOUND";
     $en = "FROM_EMPTY_OR_NOT_FOUND";
+    return $this->wrong_response->error_response($ar, $en, 1002);
+  }
+  function FROM_MUST_BE_NUMBER(): ResultData
+  {
+    $ar = "FROM_MUST_BE_NUMBER";
+    $en = "FROM_MUST_BE_NUMBER";
     return $this->wrong_response->error_response($ar, $en, 1002);
   }
   function NAME_EMPTY_OR_NOT_FOUND(): ResultData

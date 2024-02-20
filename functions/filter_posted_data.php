@@ -115,7 +115,7 @@ class FilterPostedData
     // 
     function checkDeviceInfo(): ResultData
     {
-        $name = "device_info";
+        $name = "device_info";  
         if (!isset($this->data1[$name]) || empty($this->data1[$name])) {
             return fun1()->JSON_FORMAT_INVALID("DEVCIE_INFO");
         }
@@ -134,7 +134,6 @@ class FilterPostedData
         for ($i = 0; $i < count($array); $i++) {
             if (str_contains($value, $array[$i])) {
                 return fun1()->DEVICE_INFO_MUST_BE_FORMATTED();
-                ;
             }
         }
         // print_r($value);
@@ -230,7 +229,7 @@ class FilterPostedData
         }
         $value = $this->data3[$name];
         if (!is_numeric($value)) {
-            return fun()->FROM_MUST_BE_NUMBER();
+            return fun1()->FROM_MUST_BE_NUMBER();
         }
         return fun1()->SUCCESS_WITH_DATA($value);
     }
@@ -243,7 +242,7 @@ class FilterPostedData
         }
         $value = $this->data3[$name];
         
-        // $value = addslashes($value);
+        $value = addslashes($value);
         return fun1()->SUCCESS_WITH_DATA($value);
     }
     function checkSearchBy(): ResultData
